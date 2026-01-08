@@ -1,0 +1,21 @@
+package net.cardboard.stellarbound.registry;
+
+import net.cardboard.stellarbound.Stellarbound;
+import net.cardboard.stellarbound.entity.WimpEntity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobCategory;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.minecraftforge.registries.RegistryObject;
+
+public class ModEntities {
+
+    public static final DeferredRegister<EntityType<?>> ENTITIES =
+            DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Stellarbound.MOD_ID);
+
+    public static final RegistryObject<EntityType<WimpEntity>> WIMP =
+            ENTITIES.register("wimp",
+                    () -> EntityType.Builder.of(WimpEntity::new, MobCategory.CREATURE)
+                            .sized(0.6f, 0.8f) // pequeño
+                            .build("wimp"));
+}

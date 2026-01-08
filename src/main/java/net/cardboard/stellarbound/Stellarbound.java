@@ -1,7 +1,10 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.client.renderer.WimpRenderer;
 import net.cardboard.stellarbound.registry.ModCreativeTabs;
+import net.cardboard.stellarbound.registry.ModEntities;
 import net.cardboard.stellarbound.registry.ModItems;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -19,7 +22,6 @@ public class Stellarbound
 {
     // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "stellarbound";
-    // Directly reference a slf4j logger
 
     public Stellarbound(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
@@ -31,6 +33,8 @@ public class Stellarbound
 
         modEventBus.addListener(this::addCreative);
         ModCreativeTabs.TABS.register(modEventBus);
+
+        ModEntities.ENTITIES.register(modEventBus);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
@@ -53,7 +57,8 @@ public class Stellarbound
     {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-
+            // Registrar el renderer del Wimp
+            EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
         }
     }
 }

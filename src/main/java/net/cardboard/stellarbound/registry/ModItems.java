@@ -15,4 +15,8 @@ public class ModItems {
             "iterium_alloy_ingot",
             () -> new Item(new Item.Properties())
     );
+    public static final RegistryObject<Item> WIMP_ESSENCE = ITEMS.register(
+            "wimp_essence",
+            () -> new Item(new Item.Properties())
+    );
 }
