@@ -1,5 +1,8 @@
 package net.cardboard.stellarbound.entity;
 
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import org.jetbrains.annotations.NotNull;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
@@ -18,12 +21,19 @@ import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class WimpEntity extends PathfinderMob implements GeoEntity {
 
+    private static final EntityDataAccessor<Boolean> RUNNING =
+            SynchedEntityData.defineId(WimpEntity.class, EntityDataSerializers.BOOLEAN);
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-    private boolean isRunning = false;
     private int runningTicks = 0;
 
     public WimpEntity(EntityType<? extends PathfinderMob> type, @NotNull Level level) {
         super(type, level);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(RUNNING, false);
     }
 
     @Override
@@ -40,8 +50,8 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
         if (!this.level().isClientSide) {
-            this.isRunning = true;
-            this.runningTicks = 200; // 10 segundos (200 ticks)
+            this.entityData.set(RUNNING, true);
+            this.runningTicks = 200;
         }
         return super.hurt(source, amount);
     }
@@ -50,11 +60,10 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
     public void tick() {
         super.tick();
 
-        // Manejar el estado de correr
-        if (!this.level().isClientSide && this.isRunning) {
+        if (!this.level().isClientSide && this.entityData.get(RUNNING)) {
             this.runningTicks--;
             if (this.runningTicks <= 0) {
-                this.isRunning = false;
+                this.entityData.set(RUNNING, false);
                 this.runningTicks = 0;
             }
         }
@@ -67,19 +76,22 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
                 "controller",
                 5,
                 state -> {
-                    // Si está corriendo asustado
-                    if (isRunning || (this.getDeltaMovement().horizontalDistanceSqr() > 0.01)) {
-                        if (isRunning) {
-                            return state.setAndContinue(
-                                    RawAnimation.begin().thenLoop("animation.wimp.run")
-                            );
-                        }
-                        // Caminando normal
+
+                    boolean moving = state.isMoving();
+                    boolean running = this.entityData.get(RUNNING);
+
+                    if (running) {
+                        return state.setAndContinue(
+                                RawAnimation.begin().thenLoop("animation.wimp.run")
+                        );
+                    }
+
+                    if (moving) {
                         return state.setAndContinue(
                                 RawAnimation.begin().thenLoop("animation.wimp.walk")
                         );
                     }
-                    // Idle
+
                     return state.setAndContinue(
                             RawAnimation.begin().thenLoop("animation.wimp.idle")
                     );
