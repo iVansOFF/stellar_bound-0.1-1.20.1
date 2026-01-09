@@ -71,37 +71,25 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(
-                this,
-                "controller",
-                5,
-                state -> {
+        controllers.add(new AnimationController<>(this, "controller", 5, state -> {
+            boolean running = this.entityData.get(RUNNING);
+            boolean moving = this.getDeltaMovement().horizontalDistanceSqr() > 1.0E-6;
 
-                    boolean moving = state.isMoving();
-                    boolean running = this.entityData.get(RUNNING);
+            if (running) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.wimp.run"));
+            }
 
-                    if (running) {
-                        return state.setAndContinue(
-                                RawAnimation.begin().thenLoop("animation.wimp.run")
-                        );
-                    }
+            if (moving) {
+                return state.setAndContinue(RawAnimation.begin().thenLoop("animation.wimp.walk"));
+            }
 
-                    if (moving) {
-                        return state.setAndContinue(
-                                RawAnimation.begin().thenLoop("animation.wimp.walk")
-                        );
-                    }
-
-                    return state.setAndContinue(
-                            RawAnimation.begin().thenLoop("animation.wimp.idle")
-                    );
-                }
-        ));
+            return state.setAndContinue(RawAnimation.begin().thenLoop("animation.wimp.idle"));
+        }));
     }
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 10.0D)
+                .add(Attributes.MAX_HEALTH, 4.0D)
                 .add(Attributes.MOVEMENT_SPEED, 0.25D)
                 .add(Attributes.FOLLOW_RANGE, 16.0D);
     }

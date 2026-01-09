@@ -17,7 +17,20 @@ public class ModCreativeTabs {
                     CreativeModeTab.builder()
                             .title(net.minecraft.network.chat.Component.literal("Stellarbound Materials"))
                             .icon(() -> new ItemStack(ModItems.ITERIUM_ALLOY_INGOT.get()))
-                            .displayItems((parameters, output) -> output.accept(ModItems.ITERIUM_ALLOY_INGOT.get()))
+                            .displayItems((parameters, output) -> {
+                                output.accept(ModItems.ITERIUM_ALLOY_INGOT.get());
+                                output.accept(ModItems.WIMP_ESSENCE.get());
+                            })
+                            .build()
+            );
+    public static final RegistryObject<CreativeModeTab> STELLARBOUND_MOBS =
+            TABS.register("stellarbound_mobs", () ->
+                    CreativeModeTab.builder()
+                            .title(net.minecraft.network.chat.Component.literal("Stellarbound Mobs"))
+                            .icon(() -> new ItemStack(ModItems.WIMP_SPAWN_EGG.get()))
+                            .displayItems((parameters, output) -> {
+                                output.accept(ModItems.WIMP_SPAWN_EGG.get());
+                            })
                             .build()
             );
 }

@@ -1,5 +1,6 @@
 package net.cardboard.stellarbound.registry;
 
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,5 +19,14 @@ public class ModItems {
     public static final RegistryObject<Item> WIMP_ESSENCE = ITEMS.register(
             "wimp_essence",
             () -> new Item(new Item.Properties())
+    );
+    public static final RegistryObject<Item> WIMP_SPAWN_EGG = ITEMS.register(
+            "wimp_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.WIMP,
+                    0xF59AC2, // rosado wimp
+                    0xFFCCE5, // rosado claro
+                    new Item.Properties()
+            )
     );
 }
