@@ -21,7 +21,24 @@ public class ModBlocks {
                             .sound(SoundType.WOOD)
                             .strength(2.0F, 6.0F)
                             .noOcclusion()
-                            // 🔥 la clave
+                            .isValidSpawn((a,b,c,d) -> true)
+                    ));
+    public static final RegistryObject<Block> MOONSTONE =
+            BLOCKS.register("moonstone",
+                    () -> new Block(Block.Properties.copy(Blocks.IRON_ORE)
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.AMETHYST)
+                            .strength(2.5F, 6.0F)
+                            .noOcclusion()
+                            .isValidSpawn((a,b,c,d) -> true)
+                    ));
+    public static final RegistryObject<Block> SUNSTONE =
+            BLOCKS.register("sunstone",
+                    () -> new Block(Block.Properties.copy(Blocks.IRON_ORE)
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.STONE)
+                            .strength(2.5F, 6.0F)
+                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 }

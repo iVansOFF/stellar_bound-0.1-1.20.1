@@ -18,8 +18,12 @@ public class ModCreativeTabs {
                             .title(net.minecraft.network.chat.Component.literal("Stellarbound Materials"))
                             .icon(() -> new ItemStack(ModItems.ITERIUM_ALLOY_INGOT.get()))
                             .displayItems((parameters, output) -> {
+                                output.accept(ModItems.AETHERIUM_INGOT.get());
+                                output.accept(ModItems.SOLANIUM_INGOT.get());
                                 output.accept(ModItems.ITERIUM_ALLOY_INGOT.get());
                                 output.accept(ModItems.WIMP_ESSENCE.get());
+                                output.accept(ModItems.BRIGHT_ESSENCE.get());
+                                output.accept(ModItems.MOON_SHARD.get());
                             })
                             .build()
             );
@@ -40,6 +44,8 @@ public class ModCreativeTabs {
                             .icon(() -> new ItemStack(ModItems.MAGIC_WOOD_PLANK.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.MAGIC_WOOD_PLANK.get());
+                                output.accept(ModItems.MOONSTONE.get());
+                                output.accept(ModItems.SUNSTONE.get());
                             })
                             .build()
             );

@@ -1,9 +1,15 @@
 package net.cardboard.stellarbound.entity;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
+import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import software.bernie.geckolib.core.animation.AnimatableManager;
 import software.bernie.geckolib.core.animation.AnimationController;
 import software.bernie.geckolib.core.animation.RawAnimation;
@@ -30,6 +36,18 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
         super(type, level);
     }
 
+    @SuppressWarnings("unused")
+    public static boolean checkWimpSpawnRules(
+            EntityType<WimpEntity> entityType,
+            ServerLevelAccessor level,
+            MobSpawnType spawnType,
+            BlockPos pos,
+            RandomSource random
+    ) {
+        return level.getBlockState(pos.below()).isSolidRender(level, pos.below())
+                && level.getRawBrightness(pos, 0) > 8;
+    }
+
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
@@ -38,7 +56,6 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
 
     @Override
     protected void registerGoals() {
-        // Huye cuando es atacado
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(2, new AvoidEntityGoal<>(this, Player.class, 8.0F, 1.3D, 1.5D));
@@ -51,7 +68,7 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
     public boolean hurt(@NotNull DamageSource source, float amount) {
         if (!this.level().isClientSide) {
             this.entityData.set(RUNNING, true);
-            this.runningTicks = 200;
+            this.runningTicks = 100;
         }
         return super.hurt(source, amount);
     }
@@ -97,5 +114,35 @@ public class WimpEntity extends PathfinderMob implements GeoEntity {
     @Override
     public AnimatableInstanceCache getAnimatableInstanceCache() {
         return cache;
+    }
+
+    // ========== SONIDOS DEL ALLAY ==========
+
+    @Nullable
+    @Override
+    protected SoundEvent getAmbientSound() {
+        return SoundEvents.ALLAY_AMBIENT_WITHOUT_ITEM;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource damageSource) {
+        return SoundEvents.ALLAY_HURT;
+    }
+
+    @Nullable
+    @Override
+    protected SoundEvent getDeathSound() {
+        return SoundEvents.ALLAY_DEATH;
+    }
+
+    @Override
+    protected float getSoundVolume() {
+        return 0.6F; // Un poco más bajo que el allay original
+    }
+
+    @Override
+    public float getVoicePitch() {
+        return 1.2F; // Un poco más agudo para que suene más pequeño
     }
 }
