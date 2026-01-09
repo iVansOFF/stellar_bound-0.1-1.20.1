@@ -1,6 +1,7 @@
 package net.cardboard.stellarbound;
 
 import net.cardboard.stellarbound.client.renderer.WimpRenderer;
+import net.cardboard.stellarbound.registry.ModBlocks;
 import net.cardboard.stellarbound.registry.ModCreativeTabs;
 import net.cardboard.stellarbound.registry.ModEntities;
 import net.cardboard.stellarbound.registry.ModItems;
@@ -30,6 +31,8 @@ public class Stellarbound
 
         MinecraftForge.EVENT_BUS.register(this);
         ModItems.ITEMS.register(modEventBus);
+        ModBlocks.BLOCKS.register(modEventBus);
+
 
         modEventBus.addListener(this::addCreative);
         ModCreativeTabs.TABS.register(modEventBus);

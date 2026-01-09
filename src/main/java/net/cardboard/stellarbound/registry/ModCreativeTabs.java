@@ -33,4 +33,14 @@ public class ModCreativeTabs {
                             })
                             .build()
             );
+    public static final RegistryObject<CreativeModeTab> STELLARBOUND_BLOCKS =
+            TABS.register("stellarbound_blocks", () ->
+                    CreativeModeTab.builder()
+                            .title(net.minecraft.network.chat.Component.literal("Stellarbound Blocks"))
+                            .icon(() -> new ItemStack(ModItems.MAGIC_WOOD_PLANK.get()))
+                            .displayItems((parameters, output) -> {
+                                output.accept(ModItems.MAGIC_WOOD_PLANK.get());
+                            })
+                            .build()
+            );
 }

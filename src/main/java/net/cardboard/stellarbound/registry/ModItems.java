@@ -1,5 +1,6 @@
 package net.cardboard.stellarbound.registry;
 
+import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
 import net.minecraft.world.item.Item;
@@ -29,4 +30,8 @@ public class ModItems {
                     new Item.Properties()
             )
     );
+    public static final RegistryObject<BlockItem> MAGIC_WOOD_PLANK =
+            ITEMS.register("magic_wood_plank",
+                    () -> new BlockItem(ModBlocks.MAGIC_WOOD_PLANK.get(),
+                            new Item.Properties()));
 }
