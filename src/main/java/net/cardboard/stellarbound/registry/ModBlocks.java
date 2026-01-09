@@ -1,6 +1,8 @@
 package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
+import net.cardboard.stellarbound.block.MoonstoneBlock;
+import net.cardboard.stellarbound.block.SunstoneBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
@@ -20,24 +22,27 @@ public class ModBlocks {
                             .mapColor(MapColor.COLOR_PURPLE)
                             .sound(SoundType.WOOD)
                             .strength(2.0F, 6.0F)
+                            .lightLevel(state -> 2) // 👈 luz real
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
     public static final RegistryObject<Block> MOONSTONE =
             BLOCKS.register("moonstone",
-                    () -> new Block(Block.Properties.copy(Blocks.IRON_ORE)
+                    () -> new MoonstoneBlock(Block.Properties.copy(Blocks.IRON_ORE)
                             .mapColor(MapColor.COLOR_PURPLE)
                             .sound(SoundType.AMETHYST)
                             .strength(2.5F, 6.0F)
+                            .lightLevel(state -> 5)
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
     public static final RegistryObject<Block> SUNSTONE =
             BLOCKS.register("sunstone",
-                    () -> new Block(Block.Properties.copy(Blocks.IRON_ORE)
+                    () -> new SunstoneBlock(Block.Properties.copy(Blocks.IRON_ORE)
                             .mapColor(MapColor.COLOR_PURPLE)
-                            .sound(SoundType.STONE)
+                            .sound(SoundType.AMETHYST)
                             .strength(2.5F, 6.0F)
+                            .lightLevel(state -> 8) // 👈 luz real
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
