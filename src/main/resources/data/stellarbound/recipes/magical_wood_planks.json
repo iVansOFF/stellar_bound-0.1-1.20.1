@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "W#W"
+  ],
+  "key": {
+    "W": {
+      "item": "stellarbound:wimp_essence"
+    },
+    "#": {
+      "tag": "minecraft:planks"
+    }
+  },
+  "result": {
+    "item": "stellarbound:magic_wood_plank",
+    "count": 1
+  }
+}

@@ -14,6 +14,7 @@ import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.capabilities.Capability;
@@ -168,7 +169,7 @@ public abstract class BaseProcessingBlockEntity extends BlockEntity implements G
     protected abstract void craftItem();
 
     // Common processing method that subclasses can call
-    protected static void tick(Level level, BlockPos pos, BlockState state, BaseProcessingBlockEntity blockEntity) {
+    public static <T extends BaseProcessingBlockEntity> void tick(Level level, BlockPos pos, BlockState state, T blockEntity) {
         if (level.isClientSide()) {
             return;
         }

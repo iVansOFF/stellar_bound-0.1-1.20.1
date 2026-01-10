@@ -1,0 +1,19 @@
+{
+  "type": "stellarbound:infuse_forgery",
+  "ingredients": [
+    {
+      "item": "stellarbound:wimp_essence"
+    },
+    {
+      "item": "minecraft:raw_copper"
+    },
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "output": {
+    "item": "stellarbound:iterium_alloy_ingot",
+    "count": 1
+  },
+  "processingTime": 200
+}

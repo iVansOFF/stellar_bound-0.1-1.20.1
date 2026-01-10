@@ -1,0 +1,19 @@
+{
+  "type": "stellarbound:infuse_forgery",
+  "ingredients": [
+    {
+      "item": "stellarbound:bright_essence"
+    },
+    {
+      "item": "minecraft:raw_iron"
+    },
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "output": {
+    "item": "stellarbound:aetherium_ingot",
+    "count": 1
+  },
+  "processingTime": 250
+}

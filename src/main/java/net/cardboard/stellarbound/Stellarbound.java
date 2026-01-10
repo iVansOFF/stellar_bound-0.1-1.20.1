@@ -3,6 +3,7 @@ package net.cardboard.stellarbound;
 import net.cardboard.stellarbound.client.renderer.InfuseForgeryRenderer;
 import net.cardboard.stellarbound.entity.WimpEntity;
 import net.cardboard.stellarbound.client.renderer.WimpRenderer;
+import net.cardboard.stellarbound.recipe.ModRecipes;
 import net.cardboard.stellarbound.registry.*;
 import net.cardboard.stellarbound.screen.InfuseForgeryScreen;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -28,6 +29,8 @@ public class Stellarbound {
 
     public Stellarbound(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
+
+        ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
 

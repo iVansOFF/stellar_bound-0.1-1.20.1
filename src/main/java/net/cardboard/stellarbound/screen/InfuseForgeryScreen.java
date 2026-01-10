@@ -24,7 +24,7 @@ public class InfuseForgeryScreen extends BaseProcessingScreen<InfuseForgeryMenu>
     protected void renderProgressBar(GuiGraphics guiGraphics, int x, int y) {
         if (menu.isCrafting()) {
             // Barra de progreso: 4x27 píxeles
-            guiGraphics.blit(TEXTURE, x + 105, y + 35, 176, 0, 4, menu.getScaledProgress(27));
+            guiGraphics.blit(TEXTURE, x + 146, y + 30, 176, 0, 4, menu.getScaledProgress(27));
         }
     }
 }

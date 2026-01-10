@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "CMC",
+    "CFC",
+    "MIM"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:cobbled_deepslate"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "F": {
+      "item": "minecraft:blast_furnace"
+    },
+    "M": {
+      "item": "stellarbound:magic_wood_plank"
+    }
+  },
+  "result": {
+    "item": "stellarbound:infuse_forgery",
+    "count": 1
+  }
+}
