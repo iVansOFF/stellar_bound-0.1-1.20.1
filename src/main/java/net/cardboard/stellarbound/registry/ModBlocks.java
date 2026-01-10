@@ -48,10 +48,12 @@ public class ModBlocks {
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
+    // En ModBlocks.java
     public static final RegistryObject<Block> INFUSE_FORGERY = BLOCKS.register("infuse_forgery",
             () -> new InfuseForgeryBlock(BlockBehaviour.Properties.of()
-                    .strength(3.5f)
+                    .mapColor(MapColor.METAL)
                     .requiresCorrectToolForDrops()
-                    .noOcclusion()
-            ));
+                    .strength(3.5F)
+                    .sound(SoundType.METAL)
+                    .noOcclusion()));
 }

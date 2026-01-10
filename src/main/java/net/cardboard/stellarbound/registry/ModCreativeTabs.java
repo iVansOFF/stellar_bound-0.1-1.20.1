@@ -41,7 +41,7 @@ public class ModCreativeTabs {
             TABS.register("stellarbound_blocks", () ->
                     CreativeModeTab.builder()
                             .title(net.minecraft.network.chat.Component.literal("Stellarbound Blocks"))
-                            .icon(() -> new ItemStack(ModItems.MAGIC_WOOD_PLANK.get()))
+                            .icon(() -> new ItemStack(ModItems.INFUSE_FORGERY.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.INFUSE_FORGERY.get());
                                 output.accept(ModItems.MAGIC_WOOD_PLANK.get());

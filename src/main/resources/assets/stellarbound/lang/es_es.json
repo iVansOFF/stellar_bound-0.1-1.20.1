@@ -1,0 +1,15 @@
+{
+  "item.stellarbound.iterium_alloy_ingot": "Lingote de Aleación de Iterio",
+  "item.stellarbound.aetherium_ingot": "Lingote Aeterio",
+  "item.stellarbound.solanium_ingot": "Lingote Solanio",
+  "item.stellarbound.bright_essence": "Esencia Brillante",
+  "item.stellarbound.moon_shard": "Fragmento de Luna",
+  "item.stellarbound.wimp_essence": "Esencia Endeble",
+  "block.stellarbound.magic_wood_plank": "Tablones de Madera Magico",
+  "block.stellarbound.moonstone": "Piedra Lunar",
+  "block.stellarbound.sunstone": "Piedra Solar",
+  "block.stellarbound.infuse_forgery": "Forja de Imbuición",
+  "itemGroup.stellarbound.stellarbound_materials": "Stellarbound Materiales",
+  "itemGroup.stellarbound.stellarbound_mobs": "Stellarbound Entidades",
+  "itemGroup.stellarbound.stellarbound_blocks": "Stellarbound Bloques"
+}
