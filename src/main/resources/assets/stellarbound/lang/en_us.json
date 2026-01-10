@@ -1,13 +1,14 @@
 {
   "item.stellarbound.iterium_alloy_ingot": "Iterium Alloy Ingot",
   "item.stellarbound.aetherium_ingot": "Aetherium Ingot",
-  "item.stellarbound.solanium_ingot": "Solanium Ingot",
+  "item.stellarbound.solanium_ingot": "Solanite Ingot",
   "item.stellarbound.bright_essence": "Bright Essence",
   "item.stellarbound.moon_shard": "Moon Shard",
   "item.stellarbound.wimp_essence": "Wimp Essence",
   "block.stellarbound.magic_wood_plank": "Magic Wood Plank",
   "block.stellarbound.moonstone": "Moon Stone",
   "block.stellarbound.sunstone": "Sun Stone",
+  "block.stellarbound.infuse_forgery": "Infuse Forgery",
   "itemGroup.stellarbound.stellarbound_materials": "Stellarbound Materials",
   "itemGroup.stellarbound.stellarbound_mobs": "Stellarbound Mobs",
   "itemGroup.stellarbound.stellarbound_blocks": "Stellarbound Blocks"

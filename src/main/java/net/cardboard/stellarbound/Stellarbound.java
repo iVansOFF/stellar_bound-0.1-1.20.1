@@ -1,12 +1,11 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.client.renderer.InfuseForgeryRenderer;
 import net.cardboard.stellarbound.entity.WimpEntity;
 import net.cardboard.stellarbound.client.renderer.WimpRenderer;
-import net.cardboard.stellarbound.registry.ModBlocks;
-import net.cardboard.stellarbound.registry.ModCreativeTabs;
-import net.cardboard.stellarbound.registry.ModEntities;
-import net.cardboard.stellarbound.registry.ModItems;
+import net.cardboard.stellarbound.registry.*;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.api.distmarker.Dist;
@@ -19,6 +18,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 
 @Mod(Stellarbound.MOD_ID)
 public class Stellarbound {
@@ -36,7 +36,14 @@ public class Stellarbound {
         modEventBus.addListener(this::addCreative);
         ModCreativeTabs.TABS.register(modEventBus);
 
+        ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
+
         ModEntities.ENTITIES.register(modEventBus);
+    }
+
+    // Método helper para crear ResourceLocations
+    public static ResourceLocation id(String path) {
+        return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
 
     @SuppressWarnings("deprecation")
@@ -63,6 +70,14 @@ public class Stellarbound {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
+        }
+
+        @SubscribeEvent
+        public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerBlockEntityRenderer(
+                    ModBlockEntities.INFUSE_FORGERY.get(),
+                    context -> new InfuseForgeryRenderer()
+            );
         }
     }
 }

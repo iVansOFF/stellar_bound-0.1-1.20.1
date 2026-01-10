@@ -61,4 +61,9 @@ public class ModItems {
                     () -> new BlockItem(ModBlocks.SUNSTONE.get(),
                             new Item.Properties())
             );
+    public static final RegistryObject<BlockItem> INFUSE_FORGERY =
+            ITEMS.register("infuse_forgery",
+                    () -> new BlockItem(ModBlocks.INFUSE_FORGERY.get(),
+                            new Item.Properties())
+            );
 }

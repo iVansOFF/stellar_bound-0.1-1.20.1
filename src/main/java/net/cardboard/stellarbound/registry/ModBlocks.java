@@ -1,11 +1,13 @@
 package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
+import net.cardboard.stellarbound.block.InfuseForgeryBlock;
 import net.cardboard.stellarbound.block.MoonstoneBlock;
 import net.cardboard.stellarbound.block.SunstoneBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -46,4 +48,10 @@ public class ModBlocks {
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
+    public static final RegistryObject<Block> INFUSE_FORGERY = BLOCKS.register("infuse_forgery",
+            () -> new InfuseForgeryBlock(BlockBehaviour.Properties.of()
+                    .strength(3.5f)
+                    .requiresCorrectToolForDrops()
+                    .noOcclusion()
+            ));
 }
