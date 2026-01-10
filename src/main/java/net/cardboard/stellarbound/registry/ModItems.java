@@ -1,5 +1,6 @@
 package net.cardboard.stellarbound.registry;
 
+import net.cardboard.stellarbound.item.InfuseForgeryItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
@@ -61,9 +62,10 @@ public class ModItems {
                     () -> new BlockItem(ModBlocks.SUNSTONE.get(),
                             new Item.Properties())
             );
-    public static final RegistryObject<BlockItem> INFUSE_FORGERY =
+    public static final RegistryObject<Item> INFUSE_FORGERY =
             ITEMS.register("infuse_forgery",
-                    () -> new BlockItem(ModBlocks.INFUSE_FORGERY.get(),
-                            new Item.Properties())
-            );
+                    () -> new InfuseForgeryItem(
+                            ModBlocks.INFUSE_FORGERY.get(),
+                            new Item.Properties()
+                    ));
 }

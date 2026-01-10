@@ -41,7 +41,6 @@ public class Stellarbound {
         ModEntities.ENTITIES.register(modEventBus);
     }
 
-    // Método helper para crear ResourceLocations
     public static ResourceLocation id(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
     }
