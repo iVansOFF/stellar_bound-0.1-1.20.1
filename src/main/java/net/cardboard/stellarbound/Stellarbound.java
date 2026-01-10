@@ -4,6 +4,8 @@ import net.cardboard.stellarbound.client.renderer.InfuseForgeryRenderer;
 import net.cardboard.stellarbound.entity.WimpEntity;
 import net.cardboard.stellarbound.client.renderer.WimpRenderer;
 import net.cardboard.stellarbound.registry.*;
+import net.cardboard.stellarbound.screen.InfuseForgeryScreen;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.SpawnPlacements;
@@ -39,6 +41,8 @@ public class Stellarbound {
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
 
         ModEntities.ENTITIES.register(modEventBus);
+
+        ModMenuTypes.MENUS.register(modEventBus);
     }
 
     public static ResourceLocation id(String path) {
@@ -69,6 +73,9 @@ public class Stellarbound {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
+
+            // Registra el screen de la GUI
+            MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
         }
 
         @SubscribeEvent
