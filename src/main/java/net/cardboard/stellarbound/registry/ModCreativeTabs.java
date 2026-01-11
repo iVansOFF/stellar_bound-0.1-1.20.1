@@ -12,6 +12,21 @@ public class ModCreativeTabs {
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Stellarbound.MOD_ID);
 
+    public static final RegistryObject<CreativeModeTab> STELLARBOUND_TOOLS =
+            TABS.register("stellarbound_tools", () ->
+                    CreativeModeTab.builder()
+                            .title(net.minecraft.network.chat.Component.literal("Stellarbound Arsenal"))
+                            .icon(() -> new ItemStack(ModItems.ITERIUM_SWORD.get()))
+                            .displayItems((parameters, output) -> {
+                                output.accept(ModItems.ITERIUM_SWORD.get());
+                                output.accept(ModItems.ITERIUM_PICKAXE.get());
+                                output.accept(ModItems.ITERIUM_AXE.get());
+                                output.accept(ModItems.ITERIUM_SHOVEL.get());
+                                output.accept(ModItems.ITERIUM_HOE.get());
+                            })
+                            .build()
+            );
+
     public static final RegistryObject<CreativeModeTab> STELLARBOUND_MATERIALS =
             TABS.register("stellarbound_materials", () ->
                     CreativeModeTab.builder()
@@ -34,6 +49,7 @@ public class ModCreativeTabs {
                             .icon(() -> new ItemStack(ModItems.WIMP_SPAWN_EGG.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.WIMP_SPAWN_EGG.get());
+                                output.accept(ModItems.WISP_BELL_SPAWN_EGG.get());
                             })
                             .build()
             );

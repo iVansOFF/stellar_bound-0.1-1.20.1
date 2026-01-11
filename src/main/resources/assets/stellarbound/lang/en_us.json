@@ -1,5 +1,10 @@
 {
   "item.stellarbound.iterium_alloy_ingot": "Iterium Alloy Ingot",
+  "item.stellarbound.iterium_sword": "Iterium Sword",
+  "item.stellarbound.iterium_axe": "Iterium Axe",
+  "item.stellarbound.iterium_pickaxe": "Iterium Pickaxe",
+  "item.stellarbound.iterium_shovel": "Iterium Shovel",
+  "item.stellarbound.iterium_hoe": "Iterium Hoe",
   "item.stellarbound.aetherium_ingot": "Aetherium Ingot",
   "item.stellarbound.solanium_ingot": "Solanite Ingot",
   "item.stellarbound.bright_essence": "Bright Essence",

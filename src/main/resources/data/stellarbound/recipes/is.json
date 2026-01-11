@@ -1,0 +1,19 @@
+{
+  "type": "stellarbound:infuse_forgery",
+  "ingredients": [
+    {
+      "item": "stellarbound:iterium_alloy_ingot"
+    },
+    {
+      "item": "minecraft:iron_sword"
+    },
+    {
+      "item": "minecraft:coal"
+    }
+  ],
+  "output": {
+    "item": "stellarbound:iterium_sword",
+    "count": 1
+  },
+  "processingTime": 350
+}

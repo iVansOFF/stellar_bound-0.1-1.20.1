@@ -1,6 +1,7 @@
 package net.cardboard.stellarbound;
 
 import net.cardboard.stellarbound.entity.WimpEntity;
+import net.cardboard.stellarbound.entity.WispBellEntity;
 import net.cardboard.stellarbound.registry.ModEntities;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -12,5 +13,6 @@ public class ModEvents {
     @SubscribeEvent
     public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.WIMP.get(), WimpEntity.createAttributes().build());
+        event.put(ModEntities.WISP_BELL.get(), WispBellEntity.createAttributes().build());
     }
 }

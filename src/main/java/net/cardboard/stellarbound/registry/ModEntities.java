@@ -2,6 +2,7 @@ package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
 import net.cardboard.stellarbound.entity.WimpEntity;
+import net.cardboard.stellarbound.entity.WispBellEntity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -16,6 +17,13 @@ public class ModEntities {
     public static final RegistryObject<EntityType<WimpEntity>> WIMP =
             ENTITIES.register("wimp",
                     () -> EntityType.Builder.of(WimpEntity::new, MobCategory.CREATURE)
-                            .sized(0.6f, 0.8f) // pequeño
+                            .sized(0.6f, 0.8f)
                             .build("wimp"));
+
+    public static final RegistryObject<EntityType<WispBellEntity>> WISP_BELL =
+            ENTITIES.register("wisp_bell",
+                    () -> EntityType.Builder.of(WispBellEntity::new, MobCategory.CREATURE)
+                            .sized(0.4f, 0.5f) // Más pequeño
+                            .fireImmune() // Inmune al fuego
+                            .build("wisp_bell"));
 }
