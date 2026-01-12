@@ -18,6 +18,7 @@ public class ModCreativeTabs {
                             .title(net.minecraft.network.chat.Component.literal("Stellarbound Arsenal"))
                             .icon(() -> new ItemStack(ModItems.ITERIUM_SWORD.get()))
                             .displayItems((parameters, output) -> {
+                                output.accept(ModItems.DIAMOND_SPEAR.get());
                                 output.accept(ModItems.ITERIUM_SWORD.get());
                                 output.accept(ModItems.ITERIUM_PICKAXE.get());
                                 output.accept(ModItems.ITERIUM_AXE.get());

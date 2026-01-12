@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "stellarbound:item/diamond_spear"
+  },
+  "display": {
+    "thirdperson_righthand": {
+      "scale": [1.4, 1.4, 1.4],
+      "rotation": [-60, 270, 0],
+      "position": [0, 25, 0]
+    },
+    "firstperson_righthand": {
+      "scale": [1.4, 1.4, 1.4],
+      "rotation": [-30, 270, 0],
+      "position": [0, 25, 0]
+    }
+  }
+}

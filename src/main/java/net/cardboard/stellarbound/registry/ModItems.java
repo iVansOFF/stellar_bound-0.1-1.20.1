@@ -14,6 +14,16 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Stellarbound.MOD_ID);
 
+    // ========== DIAMANTE ==========
+    public static final RegistryObject<Item> DIAMOND_SPEAR =
+            ITEMS.register("diamond_spear",
+                    () -> new SpearItem(
+                            new Item.Properties().durability(500),
+                            6.0,
+                            -2.8,
+                            0.25
+                    ));
+
     // ========== HERRAMIENTAS ITERIUM ==========
     public static final RegistryObject<Item> ITERIUM_SWORD = ITEMS.register(
             "iterium_sword",

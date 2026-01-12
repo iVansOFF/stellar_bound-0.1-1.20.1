@@ -1,10 +1,8 @@
 package net.cardboard.stellarbound;
 
 import net.cardboard.stellarbound.worldgen.*;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -45,18 +43,14 @@ public class Stellarbound {
         ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(this::addCreative);
 
         MinecraftForge.EVENT_BUS.register(this);
         ModItems.ITEMS.register(modEventBus);
         ModBlocks.BLOCKS.register(modEventBus);
-
-        modEventBus.addListener(this::addCreative);
         ModCreativeTabs.TABS.register(modEventBus);
-
         ModBlockEntities.BLOCK_ENTITIES.register(modEventBus);
-
         ModEntities.ENTITIES.register(modEventBus);
-
         ModMenuTypes.MENUS.register(modEventBus);
 
         modEventBus.addListener(this::onGatherData);
@@ -116,7 +110,6 @@ public class Stellarbound {
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
             EntityRenderers.register(ModEntities.WISP_BELL.get(), WispBellRenderer::new);
 
-            // Registra el screen de la GUI
             MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
         }
 
