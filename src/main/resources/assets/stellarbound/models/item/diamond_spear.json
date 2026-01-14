@@ -13,6 +13,20 @@
       "scale": [1.4, 1.4, 1.4],
       "rotation": [-30, 270, 0],
       "position": [0, 25, 0]
+    },
+    "perspectives": {
+      "gui": {
+        "parent": "minecraft:item/generated",
+        "textures": {
+          "layer0": "stellarbound:item/diamond_spear_shrunk"
+        }
+      },
+      "fixed": {
+        "parent": "minecraft:item/generated",
+        "textures": {
+          "layer0": "stellarbound:item/diamond_spear_shrunk"
+        }
+      }
     }
   }
 }

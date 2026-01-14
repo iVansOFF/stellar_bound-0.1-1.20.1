@@ -30,12 +30,15 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.client.event.EntityRenderersEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 
 @Mod(Stellarbound.MOD_ID)
 public class Stellarbound {
     public static final String MOD_ID = "stellarbound";
+    private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public Stellarbound(FMLJavaModLoadingContext context) {
         IEventBus modEventBus = context.getModEventBus();
@@ -63,7 +66,6 @@ public class Stellarbound {
     @SuppressWarnings("deprecation")
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
-            // Registrar Wimp
             SpawnPlacements.register(
                     ModEntities.WIMP.get(),
                     SpawnPlacements.Type.ON_GROUND,
@@ -71,7 +73,6 @@ public class Stellarbound {
                     WimpEntity::checkWimpSpawnRules
             );
 
-            // Registrar WispBell
             SpawnPlacements.register(
                     ModEntities.WISP_BELL.get(),
                     SpawnPlacements.Type.NO_RESTRICTIONS,
@@ -82,7 +83,6 @@ public class Stellarbound {
     }
 
     private void onGatherData(final GatherDataEvent event) {
-        // Si quieres usar Data Generators (opcional pero recomendado)
         if (event.includeServer()) {
             event.getGenerator().addProvider(true, new DatapackBuiltinEntriesProvider(
                     event.getGenerator().getPackOutput(),
@@ -107,10 +107,14 @@ public class Stellarbound {
     public static class ClientModEvents {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
+            LOGGER.info("=== STELLARBOUND CLIENT SETUP ===");
+
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
             EntityRenderers.register(ModEntities.WISP_BELL.get(), WispBellRenderer::new);
 
             MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
+
+            LOGGER.info("=== CLIENT SETUP COMPLETADO ===");
         }
 
         @SubscribeEvent

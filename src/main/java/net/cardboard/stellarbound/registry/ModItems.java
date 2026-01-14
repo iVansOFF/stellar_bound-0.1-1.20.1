@@ -1,6 +1,7 @@
 package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.item.*;
+import net.cardboard.stellarbound.item.weapon.gun.FlintlockItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
@@ -14,6 +15,11 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Stellarbound.MOD_ID);
 
+    // ========== ARMAS DE FUEGO ==========
+
+    public static final RegistryObject<Item> FLINTLOCK = ITEMS.register("flintlock",
+            FlintlockItem::new);
+
     // ========== DIAMANTE ==========
     public static final RegistryObject<Item> DIAMOND_SPEAR =
             ITEMS.register("diamond_spear",
@@ -21,7 +27,7 @@ public class ModItems {
                             new Item.Properties().durability(500),
                             6.0,
                             -2.8,
-                            0.25
+                            1
                     ));
 
     // ========== HERRAMIENTAS ITERIUM ==========
@@ -81,13 +87,18 @@ public class ModItems {
             () -> new Item(new Item.Properties())
     );
 
+    public static final RegistryObject<Item> RESONANT_CORE = ITEMS.register(
+            "resonant_core",
+            () -> new Item(new Item.Properties())
+    );
+
     // ========== SPAWN EGGS ==========
     public static final RegistryObject<Item> WIMP_SPAWN_EGG = ITEMS.register(
             "wimp_spawn_egg",
             () -> new ForgeSpawnEggItem(
                     ModEntities.WIMP,
-                    0xF59AC2, // rosado wimp
-                    0xFFCCE5, // rosado claro
+                    0xF59AC2,
+                    0xF59AC285,
                     new Item.Properties()
             )
     );
@@ -96,8 +107,8 @@ public class ModItems {
             "wisp_bell_spawn_egg",
             () -> new ForgeSpawnEggItem(
                     ModEntities.WISP_BELL,
-                    0xF59AC2, // rosado wimp
-                    0xFFCCE5, // rosado claro
+                    0xFFB347,
+                    0xFFB347,
                     new Item.Properties()
             )
     );

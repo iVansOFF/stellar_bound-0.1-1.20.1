@@ -65,11 +65,6 @@ public class InfuseForgeryBlockEntity extends BaseProcessingBlockEntity {
                 .getRecipeFor(ModRecipes.INFUSE_FORGERY_TYPE.get(), inventory, level);
 
         if (recipe.isEmpty()) {
-            // Debug: imprimir lo que hay en los slots
-            System.out.println("No se encontró receta para:");
-            for (int i = 0; i < 3; i++) {
-                System.out.println("  Slot " + i + ": " + itemHandler.getStackInSlot(i));
-            }
             return false;
         }
 
@@ -83,7 +78,6 @@ public class InfuseForgeryBlockEntity extends BaseProcessingBlockEntity {
                         currentOutput.getCount() + result.getCount() <= currentOutput.getMaxStackSize());
 
         if (!canInsert) {
-            System.out.println("No hay espacio en el output");
             return false;
         }
 
@@ -99,7 +93,6 @@ public class InfuseForgeryBlockEntity extends BaseProcessingBlockEntity {
             Ingredient requiredIngredient = ingredients.get(i);
 
             if (!requiredIngredient.test(stackInSlot) || stackInSlot.getCount() < 1) {
-                System.out.println("Falta ingrediente en slot " + i + ": " + requiredIngredient);
                 return false;
             }
         }
@@ -120,8 +113,6 @@ public class InfuseForgeryBlockEntity extends BaseProcessingBlockEntity {
                 .getRecipeFor(ModRecipes.INFUSE_FORGERY_TYPE.get(), inventory, level);
 
         if (recipe.isPresent()) {
-            System.out.println("Crafting receta: " + recipe.get().getId());
-
             InfuseForgeryRecipe selectedRecipe = recipe.get();
             RegistryAccess registryAccess = level.registryAccess();
             ItemStack result = selectedRecipe.getResultItem(registryAccess);
@@ -141,8 +132,6 @@ public class InfuseForgeryBlockEntity extends BaseProcessingBlockEntity {
             } else if (ItemStack.isSameItemSameTags(currentOutput, result)) {
                 currentOutput.grow(result.getCount());
             }
-
-            System.out.println("Crafteo completado. Output: " + itemHandler.getStackInSlot(3));
         }
     }
 

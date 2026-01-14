@@ -1,0 +1,19 @@
+{
+  "type": "stellarbound:infuse_forgery",
+  "ingredients": [
+    {
+      "item": "stellarbound:moon_shard"
+    },
+    {
+      "item": "stellarbound:aetherium_ingot"
+    },
+    {
+      "item": "stellarbound:resonant_core"
+    }
+  ],
+  "output": {
+    "item": "stellarbound:solanium_ingot",
+    "count": 1
+  },
+  "processingTime": 200
+}
