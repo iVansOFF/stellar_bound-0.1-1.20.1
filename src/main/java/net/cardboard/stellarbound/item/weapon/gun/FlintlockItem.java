@@ -42,6 +42,11 @@ public class FlintlockItem extends BaseGunItem {
     }
 
     @Override
+    protected RawAnimation getIdleUnloadedAnimation() {
+        return RawAnimation.begin().thenLoop("flintlock.idle_unloaded");
+    }
+
+    @Override
     protected RawAnimation getShootAnimation() {
         return RawAnimation.begin().thenPlay("flintlock.shoot");
     }
@@ -113,7 +118,6 @@ public class FlintlockItem extends BaseGunItem {
 
         int ammo = getAmmo(stack);
         boolean reloading = isReloading(stack);
-        int cooldown = getCooldown(stack);
 
         tooltip.add(Component.literal("§7Class: §eMarksman"));
         tooltip.add(Component.literal(""));
@@ -121,9 +125,7 @@ public class FlintlockItem extends BaseGunItem {
         tooltip.add(Component.literal("§6Ammo: §f" + ammo + "/" + getMaxAmmo()));
 
         if (reloading) {
-            tooltip.add(Component.literal("§eReloading... §7(" + cooldown + " ticks)"));
-        } else if (cooldown > 0) {
-            tooltip.add(Component.literal("§cOn Cooldown §7(" + cooldown + " ticks)"));
+            tooltip.add(Component.literal("§eReloading..."));
         }
 
         tooltip.add(Component.literal("§cDamage: §f" + getDamage()));

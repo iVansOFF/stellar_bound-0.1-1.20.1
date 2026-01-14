@@ -11,8 +11,7 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class GunHudOverlay implements IGuiOverlay {
 
-    private static final ResourceLocation HUD_TEXTURE =
-            ResourceLocation.fromNamespaceAndPath("stellarbound", "textures/gui/gun_hud.png");
+    // Texture removed since we're not using it
 
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
@@ -30,11 +29,19 @@ public class GunHudOverlay implements IGuiOverlay {
             gunStack = offHand;
         }
 
-        if (!gunStack.isEmpty() && minecraft.player.isUsingItem()) {
+        if (!gunStack.isEmpty()) {
             BaseGunItem gun = (BaseGunItem) gunStack.getItem();
             int ammo = BaseGunItem.getAmmo(gunStack);
             boolean reloading = BaseGunItem.isReloading(gunStack);
-            int cooldown = BaseGunItem.getCooldown(gunStack);
+
+            // Usar el cooldown del ItemCooldownManager
+            boolean isOnCooldown = minecraft.player.getCooldowns().isOnCooldown(gun);
+            float cooldownPercent = 0.0f;
+
+            if (isOnCooldown) {
+                // Calcular el porcentaje del cooldown restante
+                cooldownPercent = minecraft.player.getCooldowns().getCooldownPercent(gun, partialTick);
+            }
 
             // Posición del HUD
             int x = screenWidth / 2 + 10;
@@ -53,13 +60,26 @@ public class GunHudOverlay implements IGuiOverlay {
                 String reloadText = "Reloading...";
                 guiGraphics.drawString(minecraft.font, reloadText, x, y + 12, 0xFFFF00);
 
-                // Barra de progreso
-                float progress = 1.0f - ((float)cooldown / gun.getReloadTime());
+                // Barra de progreso basada en el cooldown
+                float progress = 1.0f - cooldownPercent;
                 int barWidth = (int)(40 * progress);
                 guiGraphics.fill(x, y + 22, x + barWidth, y + 24, 0xFF00FF00);
-            } else if (cooldown > 0) {
-                String cooldownText = "Cooldown: " + cooldown;
+
+                // Barra de fondo
+                guiGraphics.fill(x, y + 22, x + 40, y + 24, 0xFF555555);
+            } else if (isOnCooldown) {
+                // Mostrar cooldown de disparo
+                String cooldownText = String.format("Cooldown: %.1fs",
+                        (cooldownPercent * gun.getFireRate()) / 20.0f);
                 guiGraphics.drawString(minecraft.font, cooldownText, x, y + 12, 0xFF5555);
+
+                // Barra de cooldown
+                float progress = 1.0f - cooldownPercent;
+                int barWidth = (int)(40 * progress);
+                guiGraphics.fill(x, y + 22, x + barWidth, y + 24, 0xFF5555FF);
+
+                // Barra de fondo
+                guiGraphics.fill(x, y + 22, x + 40, y + 24, 0xFF555555);
             }
         }
     }

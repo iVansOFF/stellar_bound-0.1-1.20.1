@@ -17,6 +17,9 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public abstract class BaseGunItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -28,9 +31,10 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     protected final int reloadTime; // Ticks para recargar
     protected final float accuracy; // 0.0 - 1.0 (1.0 = perfecto)
 
-    // Estados de animación
-    private boolean isShooting = false;
-    private boolean isReloadingAnim = false;
+    // Estados de animación (almacenados por UUID del item)
+    private static final Map<UUID, Boolean> shootingStates = new HashMap<>();
+    private static final Map<UUID, Boolean> reloadingAnimStates = new HashMap<>();
+    private static final Map<UUID, Boolean> emptyStates = new HashMap<>();
 
     public BaseGunItem(Properties properties, int maxAmmo, float damage, int fireRate, int reloadTime, float accuracy) {
         super(properties.stacksTo(1));
@@ -64,23 +68,26 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         stack.getOrCreateTag().putBoolean("Reloading", reloading);
     }
 
-    public static int getCooldown(ItemStack stack) {
-        return stack.getOrCreateTag().getInt("Cooldown");
+    // ========== MÉTODOS PARA GENERAR/MANEJAR UUID DEL ITEM ==========
+
+    private static UUID getOrCreateItemUUID(ItemStack stack) {
+        if (!stack.hasTag() || !stack.getTag().contains("ItemUUID")) {
+            UUID uuid = UUID.randomUUID();
+            stack.getOrCreateTag().putUUID("ItemUUID", uuid);
+            return uuid;
+        }
+        return stack.getTag().getUUID("ItemUUID");
     }
 
-    public static void setCooldown(ItemStack stack, int cooldown) {
-        stack.getOrCreateTag().putInt("Cooldown", cooldown);
-    }
-
-    // ========== MÉTODOS DE DISPARO ==========
+    // ========== MÉTODOS DE DISPARO CON ITEM COOLDOWN ==========
 
     @Nonnull
     @Override
     public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Verificar cooldown
-        if (getCooldown(stack) > 0) {
+        // Verificar si está en cooldown (usando ItemCooldownManager)
+        if (player.getCooldowns().isOnCooldown(this)) {
             return InteractionResultHolder.fail(stack);
         }
 
@@ -104,14 +111,15 @@ public abstract class BaseGunItem extends Item implements GeoItem {
             // En cliente: sonido y efectos visuales
             playShootEffects(level, player);
             // Activar animación de disparo
-            setShooting(true);
+            setShooting(stack, true);
         }
 
         // Reducir munición
         setAmmo(stack, ammo - 1);
+        updateEmptyState(stack);
 
-        // Aplicar cooldown
-        setCooldown(stack, fireRate);
+        // Aplicar cooldown usando ItemCooldownManager
+        player.getCooldowns().addCooldown(this, fireRate);
 
         return InteractionResultHolder.success(stack);
     }
@@ -126,8 +134,10 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         if (isReloading(stack)) return;
 
         setReloading(stack, true);
-        setCooldown(stack, reloadTime);
-        setGunReloading(true); // Activar animación de recarga
+        setReloadingAnim(stack, true); // Activar animación de recarga
+
+        // Aplicar cooldown para la recarga usando ItemCooldownManager
+        player.getCooldowns().addCooldown(this, reloadTime);
 
         // Efectos de sonido de recarga
         if (!player.level().isClientSide()) {
@@ -138,7 +148,7 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         }
     }
 
-    // ========== ANIMACIONES GECKOLIB ==========
+    // ========== ANIMACIONES GECKOLIB MEJORADAS ==========
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
@@ -148,28 +158,43 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         // Controlador para recarga
         controllers.add(new AnimationController<>(this, "reload_controller", 0, this::reloadPredicate));
 
-        // Controlador para idle
+        // Controlador para idle (dinámico basado en estado del arma)
         controllers.add(new AnimationController<>(this, "idle_controller", 0, this::idlePredicate));
     }
 
     private PlayState shootPredicate(AnimationState<BaseGunItem> state) {
-        if (isShooting) {
-            isShooting = false;
-            return state.setAndContinue(getShootAnimation());
+        // Buscar si algún item de este tipo está disparando
+        for (Map.Entry<UUID, Boolean> entry : shootingStates.entrySet()) {
+            if (entry.getValue()) {
+                shootingStates.put(entry.getKey(), false);
+                return state.setAndContinue(getShootAnimation());
+            }
         }
         return PlayState.STOP;
     }
 
     private PlayState reloadPredicate(AnimationState<BaseGunItem> state) {
-        if (isReloadingAnim) {
-            isReloadingAnim = false;
-            return state.setAndContinue(getReloadAnimation());
+        // Buscar si algún item de este tipo está recargando
+        for (Map.Entry<UUID, Boolean> entry : reloadingAnimStates.entrySet()) {
+            if (entry.getValue()) {
+                reloadingAnimStates.put(entry.getKey(), false);
+                return state.setAndContinue(getReloadAnimation());
+            }
         }
         return PlayState.STOP;
     }
 
     private PlayState idlePredicate(AnimationState<BaseGunItem> state) {
-        // Siempre reproducir idle
+        // Verificar si este item específico está vacío
+        ItemStack currentStack = getCurrentItemStack();
+        if (currentStack != null && currentStack.getItem() instanceof BaseGunItem) {
+            UUID itemUUID = getOrCreateItemUUID(currentStack);
+            if (emptyStates.getOrDefault(itemUUID, false)) {
+                return state.setAndContinue(getIdleUnloadedAnimation());
+            }
+        }
+
+        // Si no está vacío, reproducir animación idle normal
         return state.setAndContinue(getIdleAnimation());
     }
 
@@ -181,6 +206,7 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     // ========== MÉTODOS DE ANIMACIÓN ABSTRACTOS ==========
 
     protected abstract RawAnimation getIdleAnimation();
+    protected abstract RawAnimation getIdleUnloadedAnimation();
     protected abstract RawAnimation getShootAnimation();
     protected abstract RawAnimation getReloadAnimation();
 
@@ -190,18 +216,15 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
-        // Actualizar cooldown
-        int cooldown = getCooldown(stack);
-        if (cooldown > 0) {
-            setCooldown(stack, cooldown - 1);
-
-            // Si era una recarga y terminó el cooldown
-            if (cooldown == 1 && isReloading(stack)) {
+        // Verificar si terminó la recarga (basado en el cooldown del jugador)
+        if (entity instanceof Player player) {
+            if (isReloading(stack) && !player.getCooldowns().isOnCooldown(this)) {
                 setReloading(stack, false);
                 setAmmo(stack, maxAmmo);
+                updateEmptyState(stack);
 
                 // Sonido de recarga completada
-                if (!level.isClientSide() && entity instanceof Player player) {
+                if (!level.isClientSide()) {
                     level.playSound(null, player.getX(), player.getY(), player.getZ(),
                             net.minecraft.sounds.SoundEvents.ARROW_HIT_PLAYER,
                             net.minecraft.sounds.SoundSource.PLAYERS,
@@ -209,6 +232,30 @@ public abstract class BaseGunItem extends Item implements GeoItem {
                 }
             }
         }
+
+        // Actualizar estado vacío
+        updateEmptyState(stack);
+    }
+
+    // ========== MÉTODOS AUXILIARES PARA ANIMACIONES ==========
+
+    private void updateEmptyState(ItemStack stack) {
+        UUID itemUUID = getOrCreateItemUUID(stack);
+        boolean isEmpty = getAmmo(stack) <= 0 && !isReloading(stack);
+        emptyStates.put(itemUUID, isEmpty);
+    }
+
+    private void setShooting(ItemStack stack, boolean shooting) {
+        shootingStates.put(getOrCreateItemUUID(stack), shooting);
+    }
+
+    private void setReloadingAnim(ItemStack stack, boolean reloading) {
+        reloadingAnimStates.put(getOrCreateItemUUID(stack), reloading);
+    }
+
+    // Método auxiliar para obtener el item stack actual (debe ser sobrescrito en el cliente)
+    protected ItemStack getCurrentItemStack() {
+        return null; // Se sobrescribe en la clase del cliente
     }
 
     // ========== GETTERS ==========
@@ -218,8 +265,4 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public int getFireRate() { return fireRate; }
     public int getReloadTime() { return reloadTime; }
     public float getAccuracy() { return accuracy; }
-
-    // Métodos para controlar animaciones
-    public void setShooting(boolean shooting) { this.isShooting = shooting; }
-    public void setGunReloading(boolean reloading) { this.isReloadingAnim = reloading; }
 }
