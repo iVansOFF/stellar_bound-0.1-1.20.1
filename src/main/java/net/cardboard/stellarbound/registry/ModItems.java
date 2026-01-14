@@ -107,7 +107,7 @@ public class ModItems {
             "wisp_bell_spawn_egg",
             () -> new ForgeSpawnEggItem(
                     ModEntities.WISP_BELL,
-                    0xFFB347,
+                    0x004cb8,
                     0xFFB347,
                     new Item.Properties()
             )
