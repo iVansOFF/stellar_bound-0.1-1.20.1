@@ -1,5 +1,9 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.client.hud.GunHudOverlay;
+import net.cardboard.stellarbound.client.renderer.BulletRenderer;
+import net.cardboard.stellarbound.entity.BulletEntity;
+import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.cardboard.stellarbound.worldgen.*;
 import net.minecraft.core.RegistrySetBuilder;
 import net.minecraft.core.registries.Registries;
@@ -111,6 +115,7 @@ public class Stellarbound {
 
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
             EntityRenderers.register(ModEntities.WISP_BELL.get(), WispBellRenderer::new);
+            EntityRenderers.register(ModEntities.BULLET.get(), BulletRenderer::new);
 
             MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
 
@@ -123,6 +128,10 @@ public class Stellarbound {
                     ModBlockEntities.INFUSE_FORGERY.get(),
                     context -> new InfuseForgeryRenderer()
             );
+        }
+        @SubscribeEvent
+        public static void registerOverlays(RegisterGuiOverlaysEvent event) {
+            event.registerAboveAll("gun_hud", new GunHudOverlay());
         }
     }
 }
