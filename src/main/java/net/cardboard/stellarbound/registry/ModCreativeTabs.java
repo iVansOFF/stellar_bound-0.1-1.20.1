@@ -19,6 +19,7 @@ public class ModCreativeTabs {
                             .icon(() -> new ItemStack(ModItems.FLINTLOCK.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.FLINTLOCK.get());
+                                output.accept(ModItems.PAPER_CARTRIDGE.get());
                             })
                             .build()
             );

@@ -18,29 +18,35 @@ public class FlintlockItem extends BaseGunItem {
                         .stacksTo(1)
                         .rarity(Rarity.COMMON)
                         .durability(500),
-                6,      // maxAmmo
-                12.0f,  // damage
-                20.0f,  // fireRate (1 segundo)
-                60.0f,  // reloadTime (3 segundos)
-                0.90f   // accuracy (90%)
+                1,      // maxAmmo
+                6.0f,  // damage
+                20.0f,  // fireRate
+                60.0f,  // reloadTime
+                0.70f   // accuracy
         );
     }
 
     @Override
     protected String getIdleAnimation() {
-        // CAMBIADO: Coincidir con el JSON
+
         return "flintlock.idle";
     }
 
     @Override
+    protected String getIdleUnloadedAnimation() {
+
+        return "flintlock.idle_unloaded";
+    }
+
+    @Override
     protected String getShootAnimation() {
-        // CAMBIADO: Coincidir con el JSON
+
         return "flintlock.shoot";
     }
 
     @Override
     protected String getReloadAnimation() {
-        // CAMBIADO: Coincidir con el JSON
+
         return "flintlock.reload";
     }
 

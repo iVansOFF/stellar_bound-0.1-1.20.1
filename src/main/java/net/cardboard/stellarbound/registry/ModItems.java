@@ -15,6 +15,13 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Stellarbound.MOD_ID);
 
+    // ========== MUNICIÓN ==========
+
+    public static final RegistryObject<Item> PAPER_CARTRIDGE = ITEMS.register(
+            "paper_cartridge",
+            () -> new Item(new Item.Properties())
+    );
+
     // ========== ARMAS DE FUEGO ==========
 
     public static final RegistryObject<Item> FLINTLOCK = ITEMS.register("flintlock",

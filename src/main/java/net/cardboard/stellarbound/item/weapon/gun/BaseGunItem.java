@@ -52,6 +52,8 @@ public abstract class BaseGunItem extends Item implements GeoItem {
 
     protected abstract String getIdleAnimation();
 
+    protected abstract String getIdleUnloadedAnimation();
+
     protected abstract String getShootAnimation();
 
     protected abstract String getReloadAnimation();
