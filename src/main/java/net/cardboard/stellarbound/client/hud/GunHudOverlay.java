@@ -1,17 +1,13 @@
 package net.cardboard.stellarbound.client.hud;
 
-import com.mojang.blaze3d.systems.RenderSystem;
 import net.cardboard.stellarbound.item.weapon.gun.BaseGunItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.gui.overlay.ForgeGui;
 import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
 public class GunHudOverlay implements IGuiOverlay {
-
-    // Texture removed since we're not using it
 
     @Override
     public void render(ForgeGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
@@ -31,8 +27,10 @@ public class GunHudOverlay implements IGuiOverlay {
 
         if (!gunStack.isEmpty()) {
             BaseGunItem gun = (BaseGunItem) gunStack.getItem();
-            int ammo = BaseGunItem.getAmmo(gunStack);
-            boolean reloading = BaseGunItem.isReloading(gunStack);
+
+            // Usar métodos de instancia en lugar de estáticos
+            int ammo = gun.getAmmo(gunStack);
+            boolean reloading = gun.isReloading(gunStack);
 
             // Usar el cooldown del ItemCooldownManager
             boolean isOnCooldown = minecraft.player.getCooldowns().isOnCooldown(gun);
