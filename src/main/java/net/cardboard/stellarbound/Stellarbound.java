@@ -1,9 +1,11 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.client.ModKeyBindings;
 import net.cardboard.stellarbound.client.hud.GunDebugOverlay;
 import net.cardboard.stellarbound.client.hud.GunHudOverlay;
 import net.cardboard.stellarbound.client.renderer.BulletRenderer;
 import net.cardboard.stellarbound.entity.BulletEntity;
+import net.cardboard.stellarbound.network.ModPackets;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.cardboard.stellarbound.worldgen.*;
 import net.minecraft.core.RegistrySetBuilder;
@@ -46,6 +48,8 @@ public class Stellarbound {
     private static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public Stellarbound(FMLJavaModLoadingContext context) {
+        ModPackets.register();
+
         IEventBus modEventBus = context.getModEventBus();
 
         ModRecipes.register(modEventBus);
@@ -134,6 +138,11 @@ public class Stellarbound {
         public static void registerOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("gun_hud", new GunHudOverlay());
             event.registerAboveAll("gun_debug", new GunDebugOverlay());
+        }
+        @SubscribeEvent
+        public static void registerKeyBindings(net.minecraftforge.client.event.RegisterKeyMappingsEvent event) {
+            event.register(ModKeyBindings.RELOAD_KEY);
+            event.register(ModKeyBindings.SHOOT_KEY);
         }
     }
 }

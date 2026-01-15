@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -134,19 +133,13 @@ public class FlintlockItem extends BaseGunItem {
         tooltip.add(Component.literal("§aAccuracy: §f" + (int)(getAccuracy() * 100) + "%"));
 
         tooltip.add(Component.literal(""));
-        tooltip.add(Component.literal("§7Right-click to shoot"));
-        tooltip.add(Component.literal("§7Automatically reloads when empty"));
+        tooltip.add(Component.literal("§7Left-click to shoot"));
+        tooltip.add(Component.literal("§7Press R to reload"));
     }
 
     @Override
     public boolean isFoil(ItemStack stack) {
         return getAmmo(stack) == getMaxAmmo();
-    }
-
-    @Override
-    public boolean onEntitySwing(@Nonnull ItemStack stack, @Nonnull LivingEntity entity) {
-        // Evitar que se balancee como arma cuerpo a cuerpo
-        return true;
     }
 
     // ========== CLIENT-SIDE RENDERER ==========

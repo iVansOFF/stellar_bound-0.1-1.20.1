@@ -24,5 +24,8 @@
   "block.stellarbound.infuse_forgery": "Infuse Forgery",
   "itemGroup.stellarbound.stellarbound_materials": "Stellarbound Materials",
   "itemGroup.stellarbound.stellarbound_mobs": "Stellarbound Mobs",
-  "itemGroup.stellarbound.stellarbound_blocks": "Stellarbound Blocks"
+  "itemGroup.stellarbound.stellarbound_blocks": "Stellarbound Blocks",
+  "key.categories.stellarbound": "Stellarbound Keys",
+  "key.stellarbound.reload": "Reload Gun",
+  "key.stellarbound.shoot": "Shoot Gun"
 }
