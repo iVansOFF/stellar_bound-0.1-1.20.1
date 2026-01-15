@@ -1,7 +1,7 @@
 package net.cardboard.stellarbound.item.weapon.gun;
 
 import net.cardboard.stellarbound.entity.BulletEntity;
-import net.cardboard.stellarbound.registry.ModEntities;
+import net.cardboard.stellarbound.item.weapon.gun.client.FlintlockRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvents;
@@ -154,12 +154,12 @@ public class FlintlockItem extends BaseGunItem {
     @Override
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new IClientItemExtensions() {
-            private net.cardboard.stellarbound.item.weapon.gun.client.FlintlockRenderer renderer;
+            private FlintlockRenderer renderer;
 
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (this.renderer == null) {
-                    this.renderer = new net.cardboard.stellarbound.item.weapon.gun.client.FlintlockRenderer();
+                    this.renderer = new FlintlockRenderer();
                 }
                 return this.renderer;
             }
