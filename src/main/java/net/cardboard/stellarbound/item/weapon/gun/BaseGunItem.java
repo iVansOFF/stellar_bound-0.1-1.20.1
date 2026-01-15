@@ -17,9 +17,6 @@ import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nonnull;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 public abstract class BaseGunItem extends Item implements GeoItem {
     private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
@@ -27,15 +24,12 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     // Propiedades del arma
     protected final int maxAmmo;
     protected final float damage;
-    protected final int fireRate; // Ticks entre disparos
-    protected final int reloadTime; // Ticks para recargar
-    protected final float accuracy; // 0.0 - 1.0 (1.0 = perfecto)
+    protected final int fireRate;
+    protected final int reloadTime;
+    protected final float accuracy;
 
-    // Estados de animación (almacenados por UUID del item)
-    private static final Map<UUID, GunAnimationStateData> animationStates = new HashMap<>();
-
-    // Almacenar temporalmente el último item stack renderizado (para cliente)
-    private static ItemStack lastRenderedStack = null;
+    // ItemStack actual siendo renderizado (solo lado cliente)
+    private static ItemStack lastRenderedStack = ItemStack.EMPTY;
 
     public BaseGunItem(Properties properties, int maxAmmo, float damage, int fireRate, int reloadTime, float accuracy) {
         super(properties.stacksTo(1));
@@ -69,29 +63,32 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         stack.getOrCreateTag().putBoolean("Reloading", reloading);
     }
 
-    // ========== MÉTODOS PARA GENERAR/MANEJAR UUID DEL ITEM ==========
-
-    private static UUID getOrCreateItemUUID(ItemStack stack) {
-        if (!stack.hasTag()) {
-            stack.getOrCreateTag();
-        }
-        if (!stack.getTag().contains("ItemUUID")) {
-            UUID uuid = UUID.randomUUID();
-            stack.getTag().putUUID("ItemUUID", uuid);
-            return uuid;
-        }
-        return stack.getTag().getUUID("ItemUUID");
+    // Nuevo: Timestamp para controlar cuándo se disparó
+    private static void setShootTimestamp(ItemStack stack, long timestamp) {
+        stack.getOrCreateTag().putLong("ShootTimestamp", timestamp);
     }
 
-    // ========== MÉTODOS DE DISPARO CON ITEM COOLDOWN ==========
+    private static long getShootTimestamp(ItemStack stack) {
+        return stack.getOrCreateTag().getLong("ShootTimestamp");
+    }
+
+    // Nuevo: Timestamp para controlar cuándo empezó la recarga
+    private static void setReloadStartTimestamp(ItemStack stack, long timestamp) {
+        stack.getOrCreateTag().putLong("ReloadStartTimestamp", timestamp);
+    }
+
+    private static long getReloadStartTimestamp(ItemStack stack) {
+        return stack.getOrCreateTag().getLong("ReloadStartTimestamp");
+    }
+
+    // ========== MÉTODOS DE DISPARO ==========
 
     @Nonnull
     @Override
     public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        UUID itemUUID = getOrCreateItemUUID(stack);
 
-        // Verificar si está en cooldown (usando ItemCooldownManager)
+        // Verificar cooldown
         if (player.getCooldowns().isOnCooldown(this)) {
             return InteractionResultHolder.fail(stack);
         }
@@ -104,7 +101,6 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         // Verificar munición
         int ammo = getAmmo(stack);
         if (ammo <= 0) {
-            // Intentar recargar automáticamente
             startReload(player, stack);
             return InteractionResultHolder.fail(stack);
         }
@@ -113,16 +109,15 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         if (!level.isClientSide()) {
             shoot(player, level, stack);
         } else {
-            // En cliente: sonido y efectos visuales
+            // En cliente: efectos y marcar timestamp de disparo
             playShootEffects(level, player);
-            // Activar animación de disparo
-            setAnimationState(itemUUID, GunAnimation.SHOOTING);
+            setShootTimestamp(stack, System.currentTimeMillis());
         }
 
         // Reducir munición
         setAmmo(stack, ammo - 1);
 
-        // Aplicar cooldown usando ItemCooldownManager
+        // Aplicar cooldown
         player.getCooldowns().addCooldown(this, fireRate);
 
         return InteractionResultHolder.success(stack);
@@ -131,21 +126,19 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     protected abstract void shoot(Player player, Level level, ItemStack stack);
 
     protected void playShootEffects(Level level, Player player) {
-        // Implementar efectos visuales y sonidos en el cliente
+        // Implementar efectos visuales y sonidos
     }
 
     protected void startReload(Player player, ItemStack stack) {
         if (isReloading(stack)) return;
 
-        UUID itemUUID = getOrCreateItemUUID(stack);
-
         setReloading(stack, true);
-        setAnimationState(itemUUID, GunAnimation.RELOADING); // Activar animación de recarga
+        setReloadStartTimestamp(stack, System.currentTimeMillis());
 
-        // Aplicar cooldown para la recarga usando ItemCooldownManager
+        // Aplicar cooldown
         player.getCooldowns().addCooldown(this, reloadTime);
 
-        // Efectos de sonido de recarga
+        // Sonido de recarga
         if (!player.level().isClientSide()) {
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                     net.minecraft.sounds.SoundEvents.ARMOR_EQUIP_IRON,
@@ -154,46 +147,45 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         }
     }
 
-    // ========== ANIMACIONES GECKOLIB MEJORADAS ==========
+    // ========== ANIMACIONES GECKOLIB ==========
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        // Controlador principal que maneja todas las animaciones
-        controllers.add(new AnimationController<>(this, "main_controller", 5, this::animationPredicate));
+        controllers.add(new AnimationController<>(this, "controller", 0, this::animationPredicate));
     }
 
     private PlayState animationPredicate(AnimationState<BaseGunItem> state) {
-        // Usar el último item stack renderizado
-        ItemStack currentStack = lastRenderedStack;
-        if (currentStack != null && currentStack.getItem() instanceof BaseGunItem) {
-            UUID itemUUID = getOrCreateItemUUID(currentStack);
-            GunAnimationStateData stateData = animationStates.get(itemUUID);
+        // Obtener el ItemStack actual
+        ItemStack stack = lastRenderedStack;
 
-            if (stateData != null) {
-                // Procesar estado de animación actual
-                switch (stateData.currentState) {
-                    case SHOOTING:
-                        stateData.currentState = GunAnimation.IDLE; // Resetear después de disparar
-                        return state.setAndContinue(getShootAnimation());
+        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseGunItem)) {
+            return state.setAndContinue(getIdleAnimation());
+        }
 
-                    case RELOADING:
-                        stateData.currentState = GunAnimation.IDLE; // Resetear después de recargar
-                        return state.setAndContinue(getReloadAnimation());
+        long currentTime = System.currentTimeMillis();
 
-                    case IDLE:
-                        // Verificar si está vacío
-                        int ammo = getAmmo(currentStack);
-                        boolean reloading = isReloading(currentStack);
-                        if (ammo <= 0 && !reloading) {
-                            return state.setAndContinue(getIdleUnloadedAnimation());
-                        } else {
-                            return state.setAndContinue(getIdleAnimation());
-                        }
-                }
+        // Verificar si acabamos de disparar (últimos 750ms para animación de 0.75s)
+        long shootTime = getShootTimestamp(stack);
+        if (shootTime > 0 && (currentTime - shootTime) < 750) {
+            return state.setAndContinue(getShootAnimation());
+        }
+
+        // Verificar si estamos recargando
+        boolean reloading = isReloading(stack);
+        if (reloading) {
+            long reloadStart = getReloadStartTimestamp(stack);
+            // Duración de la animación de recarga (2.5s = 2500ms)
+            if (reloadStart > 0 && (currentTime - reloadStart) < 2500) {
+                return state.setAndContinue(getReloadAnimation());
             }
         }
 
-        // Animación por defecto (idle cargado)
+        // Idle con o sin munición
+        int ammo = getAmmo(stack);
+        if (ammo <= 0 && !reloading) {
+            return state.setAndContinue(getIdleUnloadedAnimation());
+        }
+
         return state.setAndContinue(getIdleAnimation());
     }
 
@@ -215,11 +207,14 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
-        // Verificar si terminó la recarga (basado en el cooldown del jugador)
         if (entity instanceof Player player) {
+            // Verificar si terminó la recarga
             if (isReloading(stack) && !player.getCooldowns().isOnCooldown(this)) {
                 setReloading(stack, false);
                 setAmmo(stack, maxAmmo);
+
+                // Limpiar timestamp de recarga
+                setReloadStartTimestamp(stack, 0);
 
                 // Sonido de recarga completada
                 if (!level.isClientSide()) {
@@ -229,20 +224,13 @@ public abstract class BaseGunItem extends Item implements GeoItem {
                             0.3f, 1.5f);
                 }
             }
+
+            // Limpiar timestamp de disparo después de que pase el tiempo de animación
+            long shootTime = getShootTimestamp(stack);
+            if (shootTime > 0 && (System.currentTimeMillis() - shootTime) > 750) {
+                setShootTimestamp(stack, 0);
+            }
         }
-    }
-
-    // ========== MÉTODOS AUXILIARES PARA ANIMACIONES ==========
-
-    private void setAnimationState(UUID itemUUID, GunAnimation state) {
-        GunAnimationStateData stateData = animationStates.computeIfAbsent(itemUUID, k -> new GunAnimationStateData());
-        stateData.currentState = state;
-        stateData.lastUpdateTime = System.currentTimeMillis();
-    }
-
-    // Método para actualizar el último item stack renderizado
-    public static void setLastRenderedStack(ItemStack stack) {
-        lastRenderedStack = stack;
     }
 
     // ========== GETTERS ==========
@@ -253,17 +241,13 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public int getReloadTime() { return reloadTime; }
     public float getAccuracy() { return accuracy; }
 
-    // ========== CLASES AUXILIARES ==========
+    // ========== MÉTODO PARA RENDERER ==========
 
-    // Renombrado para evitar conflicto con GeckoLib's AnimationState
-    public enum GunAnimation {
-        IDLE,
-        SHOOTING,
-        RELOADING
-    }
-
-    private static class GunAnimationStateData {
-        GunAnimation currentState = GunAnimation.IDLE;
-        long lastUpdateTime = System.currentTimeMillis();
+    /**
+     * Actualiza el último ItemStack renderizado.
+     * Debe ser llamado desde el renderer antes de renderizar.
+     */
+    public static void setLastRenderedStack(ItemStack stack) {
+        lastRenderedStack = stack;
     }
 }
