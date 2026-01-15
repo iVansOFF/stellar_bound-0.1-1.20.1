@@ -31,6 +31,7 @@ public class ModCreativeTabs {
                             .icon(() -> new ItemStack(ModItems.ITERIUM_SWORD.get()))
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.DIAMOND_SPEAR.get());
+                                output.accept(ModItems.IRON_GREATSWORD.get());
                                 output.accept(ModItems.ITERIUM_SWORD.get());
                                 output.accept(ModItems.ITERIUM_PICKAXE.get());
                                 output.accept(ModItems.ITERIUM_AXE.get());
@@ -51,6 +52,7 @@ public class ModCreativeTabs {
                                 output.accept(ModItems.ITERIUM_ALLOY_INGOT.get());
                                 output.accept(ModItems.WIMP_ESSENCE.get());
                                 output.accept(ModItems.BRIGHT_ESSENCE.get());
+                                output.accept(ModItems.BRIGHT_STICK.get());
                                 output.accept(ModItems.MOON_SHARD.get());
                                 output.accept(ModItems.RESONANT_CORE.get());
                             })

@@ -3,6 +3,7 @@ package net.cardboard.stellarbound.registry;
 import net.cardboard.stellarbound.item.*;
 import net.cardboard.stellarbound.item.weapon.gun.FlintlockItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
 import net.minecraft.world.item.Item;
@@ -30,11 +31,25 @@ public class ModItems {
     // ========== DIAMANTE ==========
     public static final RegistryObject<Item> DIAMOND_SPEAR =
             ITEMS.register("diamond_spear",
-                    () -> new SpearItem(
-                            new Item.Properties().durability(500),
-                            6.0,
-                            -2.8,
-                            1
+                    () -> new SwordClassItem(
+                            Tiers.DIAMOND,  // Tier del material
+                            4,              // Daño adicional
+                            -2.8f,          // Velocidad de ataque
+                            0.75,           // Alcance adicional
+                            new Item.Properties()
+                                    .durability(650)
+                    ));
+
+    // ========== HIERRO ==========
+    public static final RegistryObject<Item> IRON_GREATSWORD =
+            ITEMS.register("iron_greatsword",
+                    () -> new SwordClassItem(
+                            Tiers.IRON,     // Tier del material
+                            6,              // Daño adicional
+                            -3.3f,          // Velocidad de ataque
+                            0.5,            // Alcance adicional
+                            new Item.Properties()
+                                    .durability(632)
                     ));
 
     // ========== HERRAMIENTAS ITERIUM ==========
@@ -86,6 +101,11 @@ public class ModItems {
 
     public static final RegistryObject<Item> BRIGHT_ESSENCE = ITEMS.register(
             "bright_essence",
+            () -> new Item(new Item.Properties())
+    );
+
+    public static final RegistryObject<Item> BRIGHT_STICK = ITEMS.register(
+            "bright_stick",
             () -> new Item(new Item.Properties())
     );
 

@@ -1,16 +1,16 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "stellarbound:item/diamond_spear"
+    "layer0": "stellarbound:item/iron_greatsword"
   },
   "display": {
     "thirdperson_righthand": {
-      "scale": [1.4, 1.4, 1],
+      "scale": [2, 2, 1],
       "rotation": [-60, 270, 0],
-      "translation": [0, 5, 0]
+      "translation": [0, 12, -3]
     },
     "firstperson_righthand": {
-      "scale": [1.4, 1.4, 1],
+      "scale": [2, 2, 1],
       "rotation": [-30, 270, 0],
       "translation": [0, 5, 0]
     },
@@ -18,13 +18,13 @@
       "gui": {
         "parent": "minecraft:item/generated",
         "textures": {
-          "layer0": "stellarbound:item/diamond_spear_shrunk"
+          "layer0": "stellarbound:item/iron_greatsword_shrunk"
         }
       },
       "fixed": {
         "parent": "minecraft:item/generated",
         "textures": {
-          "layer0": "stellarbound:item/diamond_spear_shrunk"
+          "layer0": "stellarbound:item/iron_greatsword_shrunk"
         }
       }
     }

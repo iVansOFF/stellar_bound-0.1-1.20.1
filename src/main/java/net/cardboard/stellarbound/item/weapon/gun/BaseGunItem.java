@@ -63,7 +63,7 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         stack.getOrCreateTag().putBoolean("Reloading", reloading);
     }
 
-    // Nuevo: Timestamp para controlar cuándo se disparó
+    // Timestamp para controlar cuándo se disparó (solo cliente)
     private static void setShootTimestamp(ItemStack stack, long timestamp) {
         stack.getOrCreateTag().putLong("ShootTimestamp", timestamp);
     }
@@ -72,7 +72,7 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         return stack.getOrCreateTag().getLong("ShootTimestamp");
     }
 
-    // Nuevo: Timestamp para controlar cuándo empezó la recarga
+    // Timestamp para controlar cuándo empezó la recarga (cliente y servidor)
     private static void setReloadStartTimestamp(ItemStack stack, long timestamp) {
         stack.getOrCreateTag().putLong("ReloadStartTimestamp", timestamp);
     }
@@ -112,6 +112,8 @@ public abstract class BaseGunItem extends Item implements GeoItem {
             // En cliente: efectos y marcar timestamp de disparo
             playShootEffects(level, player);
             setShootTimestamp(stack, System.currentTimeMillis());
+            // IMPORTANTE: Limpiar timestamp de recarga cuando disparamos
+            setReloadStartTimestamp(stack, 0);
         }
 
         // Reducir munición
@@ -133,7 +135,13 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         if (isReloading(stack)) return;
 
         setReloading(stack, true);
-        setReloadStartTimestamp(stack, System.currentTimeMillis());
+
+        // Marcar timestamp en ambos lados
+        long currentTime = System.currentTimeMillis();
+        setReloadStartTimestamp(stack, currentTime);
+
+        // IMPORTANTE: Limpiar timestamp de disparo cuando empezamos a recargar
+        setShootTimestamp(stack, 0);
 
         // Aplicar cooldown
         player.getCooldowns().addCooldown(this, reloadTime);
@@ -159,33 +167,34 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         ItemStack stack = lastRenderedStack;
 
         if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseGunItem)) {
-            return state.setAndContinue(getIdleAnimation());
+            return PlayState.STOP;
         }
 
         long currentTime = System.currentTimeMillis();
 
-        // Verificar si acabamos de disparar (últimos 750ms para animación de 0.75s)
+        // PRIORIDAD 1: Verificar si acabamos de disparar (750ms)
         long shootTime = getShootTimestamp(stack);
         if (shootTime > 0 && (currentTime - shootTime) < 750) {
             return state.setAndContinue(getShootAnimation());
         }
 
-        // Verificar si estamos recargando
-        boolean reloading = isReloading(stack);
-        if (reloading) {
-            long reloadStart = getReloadStartTimestamp(stack);
-            // Duración de la animación de recarga (2.5s = 2500ms)
-            if (reloadStart > 0 && (currentTime - reloadStart) < 2500) {
-                return state.setAndContinue(getReloadAnimation());
-            }
+        // PRIORIDAD 2: Verificar si estamos recargando (2500ms)
+        long reloadStart = getReloadStartTimestamp(stack);
+        boolean isCurrentlyReloading = isReloading(stack);
+
+        if (isCurrentlyReloading && reloadStart > 0 && (currentTime - reloadStart) < 2500) {
+            return state.setAndContinue(getReloadAnimation());
         }
 
-        // Idle con o sin munición
+        // PRIORIDAD 3: Idle según munición
         int ammo = getAmmo(stack);
-        if (ammo <= 0 && !reloading) {
+
+        // Si no hay munición y NO estamos recargando, mostrar idle_unloaded
+        if (ammo <= 0 && !isCurrentlyReloading) {
             return state.setAndContinue(getIdleUnloadedAnimation());
         }
 
+        // PRIORIDAD 4: Idle normal
         return state.setAndContinue(getIdleAnimation());
     }
 

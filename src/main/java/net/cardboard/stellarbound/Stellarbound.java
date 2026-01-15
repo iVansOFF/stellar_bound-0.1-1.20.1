@@ -1,5 +1,6 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.client.hud.GunDebugOverlay;
 import net.cardboard.stellarbound.client.hud.GunHudOverlay;
 import net.cardboard.stellarbound.client.renderer.BulletRenderer;
 import net.cardboard.stellarbound.entity.BulletEntity;
@@ -132,6 +133,7 @@ public class Stellarbound {
         @SubscribeEvent
         public static void registerOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("gun_hud", new GunHudOverlay());
+            event.registerAboveAll("gun_debug", new GunDebugOverlay());
         }
     }
 }
