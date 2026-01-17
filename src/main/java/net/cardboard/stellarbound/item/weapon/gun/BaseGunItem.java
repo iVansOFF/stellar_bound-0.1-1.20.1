@@ -211,8 +211,10 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     private PlayState animationPredicate(AnimationState<BaseGunItem> event) {
         ItemStack stack = lastRenderedStack;
 
-        if (stack == null || stack.isEmpty()) {
-            return PlayState.STOP;
+        // Verificar que el stack sea válido y sea de este tipo de arma
+        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseGunItem)) {
+            event.getController().setAnimation(getIdleAnimation());
+            return PlayState.CONTINUE;
         }
 
         // Obtener el tiempo actual del cliente
@@ -276,8 +278,13 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
-        if (isSelected && level.isClientSide()) {
-            lastRenderedStack = stack;
+        if (level.isClientSide()) {
+            if (isSelected) {
+                lastRenderedStack = stack;
+            } else if (lastRenderedStack == stack) {
+                // Limpiar si este stack ya no está seleccionado
+                lastRenderedStack = ItemStack.EMPTY;
+            }
         }
 
         // Inicializar munición si no existe

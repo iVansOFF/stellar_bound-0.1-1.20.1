@@ -33,7 +33,7 @@ public class ModItems {
             ITEMS.register("diamond_spear",
                     () -> new SwordClassItem(
                             Tiers.DIAMOND,  // Tier del material
-                            4,              // Daño adicional
+                            3,              // Daño adicional
                             -2.8f,          // Velocidad de ataque
                             0.75,           // Alcance adicional
                             new Item.Properties()
@@ -45,7 +45,7 @@ public class ModItems {
             ITEMS.register("iron_greatsword",
                     () -> new SwordClassItem(
                             Tiers.IRON,     // Tier del material
-                            6,              // Daño adicional
+                            5,              // Daño adicional
                             -3.3f,          // Velocidad de ataque
                             0.5,            // Alcance adicional
                             new Item.Properties()
