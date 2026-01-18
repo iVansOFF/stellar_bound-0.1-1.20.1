@@ -1,5 +1,6 @@
 package net.cardboard.stellarbound;
 
+import net.cardboard.stellarbound.entity.SkraeveEntity;
 import net.cardboard.stellarbound.entity.WimpEntity;
 import net.cardboard.stellarbound.entity.WispBellEntity;
 import net.cardboard.stellarbound.registry.ModEntities;
@@ -14,5 +15,6 @@ public class ModEvents {
     public static void entityAttributeCreation(EntityAttributeCreationEvent event) {
         event.put(ModEntities.WIMP.get(), WimpEntity.createAttributes().build());
         event.put(ModEntities.WISP_BELL.get(), WispBellEntity.createAttributes().build());
+        event.put(ModEntities.SKRAEVE.get(), SkraeveEntity.createAttributes().build());
     }
 }

@@ -2,6 +2,7 @@ package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
 import net.cardboard.stellarbound.entity.BulletEntity;
+import net.cardboard.stellarbound.entity.SkraeveEntity;
 import net.cardboard.stellarbound.entity.WimpEntity;
 import net.cardboard.stellarbound.entity.WispBellEntity;
 import net.minecraft.world.entity.EntityType;
@@ -27,6 +28,14 @@ public class ModEntities {
                             .sized(0.4f, 0.5f) // Más pequeño
                             .fireImmune() // Inmune al fuego
                             .build("wisp_bell"));
+
+    public static final RegistryObject<EntityType<SkraeveEntity>> SKRAEVE =
+            ENTITIES.register("skraeve",
+                    () -> EntityType.Builder.of(SkraeveEntity::new, MobCategory.MONSTER)
+                            .sized(2.0f, 2.0f) // size
+                            .fireImmune() // Inmune al fuego
+                            .build("skraeve"));
+
     public static final RegistryObject<EntityType<BulletEntity>> BULLET =
             ENTITIES.register("bullet",
                     () -> EntityType.Builder.<BulletEntity>of(BulletEntity::new, MobCategory.MISC)

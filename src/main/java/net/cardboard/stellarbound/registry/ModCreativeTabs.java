@@ -66,6 +66,7 @@ public class ModCreativeTabs {
                             .displayItems((parameters, output) -> {
                                 output.accept(ModItems.WIMP_SPAWN_EGG.get());
                                 output.accept(ModItems.WISP_BELL_SPAWN_EGG.get());
+                                output.accept(ModItems.SKRAEVE_SPAWN_EGG.get());
                             })
                             .build()
             );

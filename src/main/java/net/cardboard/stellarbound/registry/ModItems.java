@@ -140,6 +140,16 @@ public class ModItems {
             )
     );
 
+    public static final RegistryObject<Item> SKRAEVE_SPAWN_EGG = ITEMS.register(
+            "skraeve_spawn_egg",
+            () -> new ForgeSpawnEggItem(
+                    ModEntities.SKRAEVE,
+                    0x0D0D0D,
+                    0xF2F2F2,
+                    new Item.Properties()
+            )
+    );
+
     // ========== BLOQUES ==========
     public static final RegistryObject<BlockItem> MAGIC_WOOD_PLANK =
             ITEMS.register("magic_wood_plank",

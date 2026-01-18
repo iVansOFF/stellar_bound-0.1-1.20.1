@@ -3,7 +3,7 @@ package net.cardboard.stellarbound;
 import net.cardboard.stellarbound.client.ModKeyBindings;
 import net.cardboard.stellarbound.client.hud.GunDebugOverlay;
 import net.cardboard.stellarbound.client.hud.GunHudOverlay;
-import net.cardboard.stellarbound.client.renderer.BulletRenderer;
+import net.cardboard.stellarbound.client.renderer.*;
 import net.cardboard.stellarbound.entity.BulletEntity;
 import net.cardboard.stellarbound.network.ModPackets;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
@@ -13,10 +13,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraftforge.common.data.DatapackBuiltinEntriesProvider;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.cardboard.stellarbound.client.renderer.InfuseForgeryRenderer;
-import net.cardboard.stellarbound.client.renderer.WispBellRenderer;
 import net.cardboard.stellarbound.entity.WimpEntity;
-import net.cardboard.stellarbound.client.renderer.WimpRenderer;
 import net.cardboard.stellarbound.entity.WispBellEntity;
 import net.cardboard.stellarbound.recipe.ModRecipes;
 import net.cardboard.stellarbound.registry.*;
@@ -120,6 +117,7 @@ public class Stellarbound {
 
             EntityRenderers.register(ModEntities.WIMP.get(), WimpRenderer::new);
             EntityRenderers.register(ModEntities.WISP_BELL.get(), WispBellRenderer::new);
+            EntityRenderers.register(ModEntities.SKRAEVE.get(), SkraeveRenderer::new);
             EntityRenderers.register(ModEntities.BULLET.get(), BulletRenderer::new);
 
             MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
