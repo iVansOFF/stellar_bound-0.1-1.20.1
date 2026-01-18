@@ -25,7 +25,6 @@ public class WispBellRenderer extends GeoEntityRenderer<WispBellEntity> {
             int packedLight
     )
     {
-        // El Wimp es chiquito y cobarde
         poseStack.scale(0.8f, 0.8f, 0.8f);
         super.render(entity, entityYaw, partialTick, poseStack, bufferSource, packedLight);
     }

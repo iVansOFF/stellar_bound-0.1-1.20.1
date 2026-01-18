@@ -42,8 +42,14 @@ public class GunHudOverlay implements IGuiOverlay {
             }
 
             // Posición del HUD
-            int x = screenWidth / 2 + 10;
-            int y = screenHeight - 60;
+            int baseX = screenWidth - 45;
+            int baseY = screenHeight - 25;
+
+            int offsetX = -10; // izquierda / derecha
+            int offsetY = -35; // arriba / abajo
+
+            int x = baseX + offsetX;
+            int y = baseY + offsetY;
 
             // Fondo
             guiGraphics.fill(x - 5, y - 5, x + 45, y + 25, 0x80000000);
@@ -55,7 +61,7 @@ public class GunHudOverlay implements IGuiOverlay {
 
             // Estado
             if (reloading) {
-                String reloadText = "Reloading...";
+                String reloadText = "Reloading";
                 guiGraphics.drawString(minecraft.font, reloadText, x, y + 12, 0xFFFF00);
 
                 // Barra de progreso basada en el cooldown
@@ -67,7 +73,7 @@ public class GunHudOverlay implements IGuiOverlay {
                 guiGraphics.fill(x, y + 22, x + 40, y + 24, 0xFF555555);
             } else if (isOnCooldown) {
                 // Mostrar cooldown de disparo
-                String cooldownText = String.format("Cooldown: %.1fs",
+                String cooldownText = String.format("CD: %.1fs",
                         (cooldownPercent * gun.getFireRate()) / 20.0f);
                 guiGraphics.drawString(minecraft.font, cooldownText, x, y + 12, 0xFF5555);
 

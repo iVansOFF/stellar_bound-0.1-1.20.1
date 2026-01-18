@@ -28,14 +28,6 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     protected final int reloadTime;
     protected final float accuracy;
 
-    // Estados de animación por ItemStack
-    // AJUSTA ESTOS VALORES SEGÚN LA DURACIÓN REAL DE TUS ANIMACIONES
-    private static final int SHOOT_ANIMATION_DURATION = 20;  // 1 segundo
-    private static final int RELOAD_ANIMATION_DURATION = 60; // 3 segundos
-
-    // Campo estático para el último ItemStack renderizado
-    private static ItemStack lastRenderedStack = ItemStack.EMPTY;
-
     public BaseGunItem(Properties properties, int maxAmmo, float damage, int fireRate, int reloadTime, float accuracy) {
         super(properties.stacksTo(1));
         this.maxAmmo = maxAmmo;
@@ -45,16 +37,12 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         this.accuracy = accuracy;
     }
 
-    public static ItemStack getLastRenderedStack() {
-        return lastRenderedStack;
-    }
-
     // ========== MÉTODOS DE ESTADO ==========
 
     public int getAmmo(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         if (tag == null || !tag.contains("Ammo")) {
-            return 0;
+            return maxAmmo; // Retorna munición completa por defecto
         }
         return tag.getInt("Ammo");
     }
@@ -75,42 +63,43 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         stack.getOrCreateTag().putBoolean("Reloading", reloading);
     }
 
-    private void setShootTick(ItemStack stack, long tick) {
-        if (tick > 0) {
-            stack.getOrCreateTag().putLong("ShootTick", tick);
-        } else {
-            CompoundTag tag = stack.getTag();
-            if (tag != null) {
-                tag.remove("ShootTick");
+    // ========== MÉTODOS PARA MUNICIÓN ==========
+
+    /**
+     * Obtiene el tipo de munición requerido por esta arma.
+     * Debe ser sobrescrito por cada arma concreta.
+     */
+    public abstract ItemStack getRequiredAmmo();
+
+    /**
+     * Verifica si el jugador tiene la munición necesaria para recargar.
+     */
+    public boolean hasRequiredAmmo(Player player) {
+        return player.getInventory().contains(getRequiredAmmo());
+    }
+
+    /**
+     * Consume la munición del inventario del jugador.
+     * @return true si se pudo consumir la munición, false si no había suficiente.
+     */
+    public boolean consumeAmmo(Player player) {
+        ItemStack requiredAmmo = getRequiredAmmo();
+        if (!player.getInventory().contains(requiredAmmo)) {
+            return false;
+        }
+
+        // Buscar y consumir el item de munición
+        for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+            ItemStack stackInSlot = player.getInventory().getItem(i);
+            if (ItemStack.isSameItemSameTags(stackInSlot, requiredAmmo)) {
+                stackInSlot.shrink(1);
+                if (stackInSlot.isEmpty()) {
+                    player.getInventory().setItem(i, ItemStack.EMPTY);
+                }
+                return true;
             }
         }
-    }
-
-    private long getShootTick(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("ShootTick")) {
-            return 0;
-        }
-        return tag.getLong("ShootTick");
-    }
-
-    private void setReloadStartTick(ItemStack stack, long tick) {
-        if (tick > 0) {
-            stack.getOrCreateTag().putLong("ReloadStartTick", tick);
-        } else {
-            CompoundTag tag = stack.getTag();
-            if (tag != null) {
-                tag.remove("ReloadStartTick");
-            }
-        }
-    }
-
-    private long getReloadStartTick(ItemStack stack) {
-        CompoundTag tag = stack.getTag();
-        if (tag == null || !tag.contains("ReloadStartTick")) {
-            return 0;
-        }
-        return tag.getLong("ReloadStartTick");
+        return false;
     }
 
     // ========== DISPARO CON CLICK IZQUIERDO ==========
@@ -147,12 +136,12 @@ public abstract class BaseGunItem extends Item implements GeoItem {
 
         int ammo = getAmmo(stack);
         if (ammo <= 0) {
+            // No disparar si no hay munición
+            if (level.isClientSide()) {
+                player.displayClientMessage(net.minecraft.network.chat.Component.literal("¡El arma está vacía!"), true);
+            }
             return;
         }
-
-        // Marcar el tick de disparo SIEMPRE (cliente y servidor)
-        setShootTick(stack, level.getGameTime());
-        setReloadStartTick(stack, 0);
 
         if (!level.isClientSide()) {
             shoot(player, level, stack);
@@ -169,14 +158,28 @@ public abstract class BaseGunItem extends Item implements GeoItem {
 
     public void startReload(Player player, ItemStack stack) {
         if (isReloading(stack)) return;
-        if (getAmmo(stack) >= maxAmmo) return;
+
+        // Verificar si el arma ya está llena
+        if (getAmmo(stack) >= maxAmmo) {
+            if (player.level().isClientSide()) {
+                player.displayClientMessage(net.minecraft.network.chat.Component.literal("¡El arma ya está cargada!"), true);
+            }
+            return;
+        }
+
+        // Verificar si tiene munición
+        if (!hasRequiredAmmo(player)) {
+            if (player.level().isClientSide()) {
+                ItemStack ammo = getRequiredAmmo();
+                player.displayClientMessage(
+                        net.minecraft.network.chat.Component.literal("¡Necesitas " + ammo.getDisplayName().getString() + "!"),
+                        true
+                );
+            }
+            return;
+        }
 
         setReloading(stack, true);
-
-        // Marcar el tick de recarga SIEMPRE (cliente y servidor)
-        setReloadStartTick(stack, player.level().getGameTime());
-        setShootTick(stack, 0);
-
         player.getCooldowns().addCooldown(this, reloadTime);
 
         if (!player.level().isClientSide()) {
@@ -187,70 +190,78 @@ public abstract class BaseGunItem extends Item implements GeoItem {
         }
     }
 
-    // ========== CLICK DERECHO NO HACE NADA ==========
+    // ========== CLICK DERECHO PARA RECARGAR ==========
 
     @Nonnull
     @Override
     public InteractionResultHolder<ItemStack> use(@Nonnull Level level, @Nonnull Player player, @Nonnull InteractionHand hand) {
-        return InteractionResultHolder.pass(player.getItemInHand(hand));
+        ItemStack stack = player.getItemInHand(hand);
+
+        // Click derecho para recargar manualmente
+        if (!isReloading(stack) && getAmmo(stack) < maxAmmo) {
+            startReload(player, stack);
+            return InteractionResultHolder.success(stack);
+        }
+
+        return InteractionResultHolder.pass(stack);
     }
 
     protected abstract void shoot(Player player, Level level, ItemStack stack);
 
     protected void playShootEffects(Level level, Player player) {
-        // Implementar efectos visuales y sonidos
+        if (level.isClientSide()) {
+            level.playSound(player, player.getX(), player.getY(), player.getZ(),
+                    net.minecraft.sounds.SoundEvents.GENERIC_EXPLODE,
+                    net.minecraft.sounds.SoundSource.PLAYERS,
+                    0.5f, 1.5f);
+        }
     }
 
     // ========== ANIMACIONES GECKOLIB ==========
 
     @Override
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "controller", 0, this::animationPredicate));
+        controllers.add(new AnimationController<>(this, "controller", 2, this::predicate));
     }
 
-    private PlayState animationPredicate(AnimationState<BaseGunItem> event) {
-        ItemStack stack = lastRenderedStack;
+    private PlayState predicate(AnimationState<BaseGunItem> event) {
+        Player player = Minecraft.getInstance().player;
+        if (player == null) {
+            return PlayState.STOP;
+        }
 
-        // Verificar que el stack sea válido y sea de este tipo de arma
-        if (stack == null || stack.isEmpty() || !(stack.getItem() instanceof BaseGunItem)) {
-            event.getController().setAnimation(getIdleAnimation());
+        ItemStack mainHand = player.getMainHandItem();
+        ItemStack offHand = player.getOffhandItem();
+        ItemStack currentStack = null;
+
+        if (mainHand.getItem() == this) {
+            currentStack = mainHand;
+        } else if (offHand.getItem() == this) {
+            currentStack = offHand;
+        }
+
+        if (currentStack == null || currentStack.isEmpty()) {
+            return PlayState.STOP;
+        }
+
+        boolean isReloading = isReloading(currentStack);
+        int ammo = getAmmo(currentStack);
+        boolean hasShootCooldown = player.getCooldowns().isOnCooldown(this);
+
+        // PRIORIDAD 1: Recarga
+        if (isReloading && hasShootCooldown) {
+            event.getController().setAnimation(getReloadAnimation());
             return PlayState.CONTINUE;
         }
 
-        // Obtener el tiempo actual del cliente
-        long currentTime = 0;
-        if (Minecraft.getInstance().level != null) {
-            currentTime = Minecraft.getInstance().level.getGameTime();
+        // PRIORIDAD 2: Disparo
+        if (!isReloading && hasShootCooldown) {
+            event.getController().setAnimation(getShootAnimation());
+            return PlayState.CONTINUE;
         }
 
-        long shootTick = getShootTick(stack);
-        long reloadStart = getReloadStartTick(stack);
-        boolean isCurrentlyReloading = isReloading(stack);
-
-        // Debug - descomentar para ver qué está pasando
-        // System.out.println("Current: " + currentTime + " Shoot: " + shootTick + " Reload: " + reloadStart + " IsReloading: " + isCurrentlyReloading);
-
-        // PRIORIDAD 1: Disparo reciente
-        if (shootTick > 0 && currentTime > 0) {
-            long timeSinceShot = currentTime - shootTick;
-            if (timeSinceShot < SHOOT_ANIMATION_DURATION) {
-                event.getController().setAnimation(getShootAnimation());
-                return PlayState.CONTINUE;
-            }
-        }
-
-        // PRIORIDAD 2: Recarga en progreso
-        if (isCurrentlyReloading && reloadStart > 0 && currentTime > 0) {
-            long timeSinceReload = currentTime - reloadStart;
-            if (timeSinceReload < RELOAD_ANIMATION_DURATION) {
-                event.getController().setAnimation(getReloadAnimation());
-                return PlayState.CONTINUE;
-            }
-        }
-
-        // PRIORIDAD 3: Idle según munición
-        int ammo = getAmmo(stack);
-        if (ammo <= 0 && !isCurrentlyReloading) {
+        // PRIORIDAD 3: Idle sin munición
+        if (ammo <= 0 && !isReloading) {
             event.getController().setAnimation(getIdleUnloadedAnimation());
             return PlayState.CONTINUE;
         }
@@ -278,49 +289,58 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public void inventoryTick(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Entity entity, int slotId, boolean isSelected) {
         super.inventoryTick(stack, level, entity, slotId, isSelected);
 
-        if (level.isClientSide()) {
-            if (isSelected) {
-                lastRenderedStack = stack;
-            } else if (lastRenderedStack == stack) {
-                // Limpiar si este stack ya no está seleccionado
-                lastRenderedStack = ItemStack.EMPTY;
-            }
-        }
-
-        // Inicializar munición si no existe
+        // Inicializar tags si no existen
         if (!stack.hasTag()) {
-            setAmmo(stack, maxAmmo);
+            CompoundTag tag = new CompoundTag();
+            tag.putInt("Ammo", maxAmmo);
+            tag.putBoolean("Reloading", false);
+            stack.setTag(tag);
         }
 
         if (entity instanceof Player player) {
-            long currentTime = level.getGameTime();
-
-            // Limpiar el tick de disparo después de la duración
-            long shootTick = getShootTick(stack);
-            if (shootTick > 0 && (currentTime - shootTick) >= SHOOT_ANIMATION_DURATION) {
-                setShootTick(stack, 0);
-            }
-
-            // Limpiar el tick de recarga después de la duración
-            long reloadStartTick = getReloadStartTick(stack);
-            if (reloadStartTick > 0 && (currentTime - reloadStartTick) >= RELOAD_ANIMATION_DURATION) {
-                setReloadStartTick(stack, 0);
-            }
-
             // Verificar si terminó la recarga
             if (isReloading(stack) && !player.getCooldowns().isOnCooldown(this)) {
                 setReloading(stack, false);
-                setAmmo(stack, maxAmmo);
-                setReloadStartTick(stack, 0);
 
-                if (!level.isClientSide()) {
-                    level.playSound(null, player.getX(), player.getY(), player.getZ(),
-                            net.minecraft.sounds.SoundEvents.ARROW_HIT_PLAYER,
-                            net.minecraft.sounds.SoundSource.PLAYERS,
-                            0.3f, 1.5f);
+                // Consumir la munición y recargar
+                if (consumeAmmo(player)) {
+                    // Calcular cuánta munición agregar (depende del arma)
+                    int ammoToAdd = getAmmoToAddOnReload();
+                    int currentAmmo = getAmmo(stack);
+                    int newAmmo = Math.min(currentAmmo + ammoToAdd, maxAmmo);
+                    setAmmo(stack, newAmmo);
+
+                    // Verificar si necesita otra recarga (para armas con múltiples balas por recarga)
+                    if (newAmmo < maxAmmo && hasRequiredAmmo(player)) {
+                        // Si aún hay espacio y tiene munición, iniciar otra recarga automáticamente
+                        startReload(player, stack);
+                    }
+
+                    if (!level.isClientSide()) {
+                        level.playSound(null, player.getX(), player.getY(), player.getZ(),
+                                net.minecraft.sounds.SoundEvents.ARROW_HIT_PLAYER,
+                                net.minecraft.sounds.SoundSource.PLAYERS,
+                                0.3f, 1.5f);
+                    }
+                } else {
+                    // No tenía munición para consumir
+                    if (level.isClientSide()) {
+                        player.displayClientMessage(
+                                net.minecraft.network.chat.Component.literal("¡No tienes munición para recargar!"),
+                                true
+                        );
+                    }
                 }
             }
         }
+    }
+
+    /**
+     * Cantidad de munición que se agrega por cada recarga.
+     * Por defecto es 1 (como la flintlock), pero puede sobrescribirse para armas con cargadores.
+     */
+    protected int getAmmoToAddOnReload() {
+        return 1;
     }
 
     // ========== GETTERS ==========
@@ -330,18 +350,4 @@ public abstract class BaseGunItem extends Item implements GeoItem {
     public int getFireRate() { return fireRate; }
     public int getReloadTime() { return reloadTime; }
     public float getAccuracy() { return accuracy; }
-
-    // ========== MÉTODO PARA RENDERER ==========
-
-    public static void setLastRenderedStack(ItemStack stack) {
-        lastRenderedStack = stack;
-    }
-
-    // ========== INICIALIZACIÓN DE MUNICIÓN ==========
-
-    @Override
-    public void onCraftedBy(@Nonnull ItemStack stack, @Nonnull Level level, @Nonnull Player player) {
-        super.onCraftedBy(stack, level, player);
-        setAmmo(stack, maxAmmo);
-    }
 }

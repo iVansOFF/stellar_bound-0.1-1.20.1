@@ -29,31 +29,34 @@ public class GunDebugOverlay implements IGuiOverlay {
         int ammo = gun.getAmmo(mainHand);
         boolean reloading = gun.isReloading(mainHand);
 
-        // Obtener los ticks de animación (ahora son long)
-        long shootTick = mainHand.getOrCreateTag().getLong("ShootTick");
-        long reloadStartTick = mainHand.getOrCreateTag().getLong("ReloadStartTick");
-        long currentTick = minecraft.level != null ? minecraft.level.getGameTime() : 0;
+        // Obtener el ID del arma para estado de animación
+        String gunId = "unknown";
+        if (mainHand.hasTag()) {
+            var tag = mainHand.getTag();
+            if (tag != null && tag.contains("GunID")) {
+                gunId = String.valueOf(tag.getInt("GunID"));
+            }
+        }
 
-        // Constantes de duración (deben coincidir con las de BaseGunItem)
-        final int SHOOT_ANIMATION_DURATION = 5;  // 0.25 segundos
-        final int RELOAD_ANIMATION_DURATION = 40; // 2 segundos
+        // Obtener datos de animación del NBT (si existen)
+        boolean shootActive = false;
+        boolean reloadActive = false;
 
-        boolean shootActive = shootTick > 0 && (currentTick - shootTick) < SHOOT_ANIMATION_DURATION;
-        boolean reloadActive = reloadStartTick > 0 && reloading && (currentTick - reloadStartTick) < RELOAD_ANIMATION_DURATION;
+        // Para disparo, usar cooldown como referencia
+        shootActive = minecraft.player.getCooldowns().isOnCooldown(gun);
 
-        // Calcular tiempos restantes (en segundos)
-        float shootTimeLeft = shootActive ? (SHOOT_ANIMATION_DURATION - (currentTick - shootTick)) / 20.0f : 0;
-        float reloadTimeLeft = reloadActive ? (RELOAD_ANIMATION_DURATION - (currentTick - reloadStartTick)) / 20.0f : 0;
+        // Para recarga, usar estado de reloading y cooldown
+        reloadActive = reloading && minecraft.player.getCooldowns().isOnCooldown(gun);
 
         // Determinar qué animación debería estar activa
-        String currentAnim = "IDLE";
-        int animColor = 0x888888;
+        String currentAnim;
+        int animColor;
 
         if (shootActive) {
-            currentAnim = "SHOOT (" + String.format("%.2f", shootTimeLeft) + "s)";
+            currentAnim = "SHOOT (active)";
             animColor = 0x00FF00;
         } else if (reloadActive) {
-            currentAnim = "RELOAD (" + String.format("%.2f", reloadTimeLeft) + "s)";
+            currentAnim = "RELOAD (active)";
             animColor = 0xFFFF00;
         } else if (ammo <= 0 && !reloading) {
             currentAnim = "IDLE_UNLOADED";
@@ -61,6 +64,9 @@ public class GunDebugOverlay implements IGuiOverlay {
         } else if (ammo <= 0) {
             currentAnim = "EMPTY";
             animColor = 0xFF0000;
+        } else {
+            currentAnim = "IDLE";
+            animColor = 0x888888;
         }
 
         // Posición del debug HUD (esquina superior izquierda)
@@ -69,11 +75,15 @@ public class GunDebugOverlay implements IGuiOverlay {
         int lineHeight = 10;
 
         // Fondo semi-transparente (ajustado para más líneas)
-        int lines = 13;
+        int lines = 12;
         guiGraphics.fill(x - 2, y - 2, x + 250, y + (lines * lineHeight) + 2, 0x80000000);
 
         // Información de estado
         guiGraphics.drawString(minecraft.font, "=== GUN DEBUG OVERLAY ===", x, y, 0xFFFF00);
+        y += lineHeight;
+
+        // ID del arma
+        guiGraphics.drawString(minecraft.font, "Gun ID: " + gunId, x, y, 0xAAAAAA);
         y += lineHeight;
 
         // Munición
@@ -82,7 +92,7 @@ public class GunDebugOverlay implements IGuiOverlay {
         y += lineHeight;
 
         // Estados booleanos
-        guiGraphics.drawString(minecraft.font, "Reloading State: " + reloading,
+        guiGraphics.drawString(minecraft.font, "Reloading: " + reloading,
                 x, y, reloading ? 0xFFFF00 : 0x888888);
         y += lineHeight;
 
@@ -90,36 +100,14 @@ public class GunDebugOverlay implements IGuiOverlay {
                 x, y, minecraft.player.getCooldowns().isOnCooldown(gun) ? 0xFF0000 : 0x00FF00);
         y += lineHeight;
 
-        // Ticks de animación
-        guiGraphics.drawString(minecraft.font, String.format("Shoot Tick: %d (Current: %d)", shootTick, currentTick),
-                x, y, shootActive ? 0x00FF00 : 0x888888);
-        y += lineHeight;
-
-        guiGraphics.drawString(minecraft.font, String.format("Reload Tick: %d", reloadStartTick),
-                x, y, reloadActive ? 0xFFFF00 : 0x888888);
-        y += lineHeight;
-
         // Animaciones activas
-        guiGraphics.drawString(minecraft.font, "Shoot Anim Active: " + (shootActive ? "YES" : "no"),
+        guiGraphics.drawString(minecraft.font, "Shoot Anim: " + (shootActive ? "ACTIVE" : "inactive"),
                 x, y, shootActive ? 0x00FF00 : 0x888888);
         y += lineHeight;
 
-        guiGraphics.drawString(minecraft.font, "Reload Anim Active: " + (reloadActive ? "YES" : "no"),
+        guiGraphics.drawString(minecraft.font, "Reload Anim: " + (reloadActive ? "ACTIVE" : "inactive"),
                 x, y, reloadActive ? 0xFFFF00 : 0x888888);
         y += lineHeight;
-
-        // Duración restante
-        if (shootActive) {
-            guiGraphics.drawString(minecraft.font, String.format("Shoot ends in: %.2fs", shootTimeLeft),
-                    x, y, 0x00FF00);
-            y += lineHeight;
-        }
-
-        if (reloadActive) {
-            guiGraphics.drawString(minecraft.font, String.format("Reload ends in: %.2fs", reloadTimeLeft),
-                    x, y, 0xFFFF00);
-            y += lineHeight;
-        }
 
         // Parámetros del arma
         guiGraphics.drawString(minecraft.font, String.format("Fire Rate: %d ticks (%.1fs)",
@@ -132,19 +120,20 @@ public class GunDebugOverlay implements IGuiOverlay {
                 x, y, 0xAAAAAA);
         y += lineHeight;
 
+        guiGraphics.drawString(minecraft.font, String.format("Damage: %.1f", gun.getDamage()),
+                x, y, 0xAAAAAA);
+        y += lineHeight;
+
+        guiGraphics.drawString(minecraft.font, String.format("Accuracy: %.2f", gun.getAccuracy()),
+                x, y, 0xAAAAAA);
+        y += lineHeight;
+
         // Animación actual (lo más importante)
         guiGraphics.drawString(minecraft.font, "Current Animation: " + currentAnim,
                 x, y, animColor);
-        y += lineHeight;
-
-        // Último ItemStack renderizado
-        ItemStack lastRendered = BaseGunItem.getLastRenderedStack();
-        boolean hasLastRendered = lastRendered != null && !lastRendered.isEmpty();
-        guiGraphics.drawString(minecraft.font, "Render Stack: " + (hasLastRendered ? "SET" : "empty"),
-                x, y, hasLastRendered ? 0x00FFFF : 0x888888);
     }
 
-    // Método para activar/desactivar desde tecla
+    // Método para activar/desactivar desde tecla (mantener para uso futuro)
     public static void toggleDebug() {
         SHOW_DEBUG = !SHOW_DEBUG;
     }

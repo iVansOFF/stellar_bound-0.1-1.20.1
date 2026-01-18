@@ -17,10 +17,8 @@ public abstract class BaseGunRenderer<T extends BaseGunItem> extends GeoItemRend
     public void renderByItem(ItemStack stack, ItemDisplayContext transformType,
                              PoseStack poseStack, MultiBufferSource bufferSource,
                              int packedLight, int packedOverlay) {
-        // Actualizar el último ItemStack renderizado para que las animaciones funcionen
-        BaseGunItem.setLastRenderedStack(stack);
-
-        // Renderizar normalmente
+        // Renderizar normalmente - ya no necesitamos setLastRenderedStack
+        // porque la animación se maneja por el estado del ItemStack actual
         super.renderByItem(stack, transformType, poseStack, bufferSource, packedLight, packedOverlay);
     }
 }

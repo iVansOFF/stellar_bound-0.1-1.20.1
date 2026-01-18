@@ -1,6 +1,7 @@
 package net.cardboard.stellarbound.item.weapon.gun;
 
 import net.cardboard.stellarbound.entity.BulletEntity;
+import net.cardboard.stellarbound.registry.ModItems;
 import net.cardboard.stellarbound.item.weapon.gun.client.FlintlockRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.network.chat.Component;
@@ -27,12 +28,18 @@ public class FlintlockItem extends BaseGunItem {
                 new Properties()
                         .stacksTo(1)
                         .rarity(Rarity.COMMON),
-                1,      // maxAmmo
+                1,      // maxAmmo (solo 1 bala por recarga)
                 6.0f,   // damage
-                20,     // fireRate (ticks)
-                60,     // reloadTime (ticks)
+                17,     // fireRate (ticks)
+                50,     // reloadTime (ticks) - 2.5 segundos
                 0.70f   // accuracy
         );
+    }
+
+    @Override
+    public ItemStack getRequiredAmmo() {
+        // Devuelve el item de munición requerido (Paper Cartridge)
+        return new ItemStack(ModItems.PAPER_CARTRIDGE.get(), 1);
     }
 
     @Override
@@ -133,8 +140,9 @@ public class FlintlockItem extends BaseGunItem {
         tooltip.add(Component.literal("§aAccuracy: §f" + (int)(getAccuracy() * 100) + "%"));
 
         tooltip.add(Component.literal(""));
+        tooltip.add(Component.literal("§7Uses: §ePaper Cartridge"));
         tooltip.add(Component.literal("§7Left-click to shoot"));
-        tooltip.add(Component.literal("§7Press R to reload"));
+        tooltip.add(Component.literal("§7Right-click to reload"));
     }
 
     @Override
