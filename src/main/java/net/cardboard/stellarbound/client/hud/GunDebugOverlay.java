@@ -133,7 +133,7 @@ public class GunDebugOverlay implements IGuiOverlay {
                 x, y, animColor);
     }
 
-    // Método para activar/desactivar desde tecla (mantener para uso futuro)
+    // Reservado para futuros Keys
     public static void toggleDebug() {
         SHOW_DEBUG = !SHOW_DEBUG;
     }
