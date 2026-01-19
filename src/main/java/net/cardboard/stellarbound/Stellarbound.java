@@ -3,6 +3,7 @@ package net.cardboard.stellarbound;
 import net.cardboard.stellarbound.client.ModKeyBindings;
 import net.cardboard.stellarbound.client.hud.GunDebugOverlay;
 import net.cardboard.stellarbound.client.hud.GunHudOverlay;
+import net.cardboard.stellarbound.client.hud.ManaOverlay;
 import net.cardboard.stellarbound.client.renderer.*;
 import net.cardboard.stellarbound.entity.BulletEntity;
 import net.cardboard.stellarbound.network.ModPackets;
@@ -63,6 +64,8 @@ public class Stellarbound {
         ModMenuTypes.MENUS.register(modEventBus);
 
         modEventBus.addListener(this::onGatherData);
+
+        MinecraftForge.EVENT_BUS.register(this);
     }
 
     public static ResourceLocation id(String path) {
@@ -136,6 +139,7 @@ public class Stellarbound {
         public static void registerOverlays(RegisterGuiOverlaysEvent event) {
             event.registerAboveAll("gun_hud", new GunHudOverlay());
             event.registerAboveAll("gun_debug", new GunDebugOverlay());
+            event.registerAboveAll("mana_bar", new ManaOverlay());
         }
         @SubscribeEvent
         public static void registerKeyBindings(net.minecraftforge.client.event.RegisterKeyMappingsEvent event) {

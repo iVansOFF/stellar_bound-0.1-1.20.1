@@ -9,8 +9,13 @@ import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.simple.SimpleChannel;
 
 public class ModPackets {
+    public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
+            ResourceLocation.fromNamespaceAndPath(Stellarbound.MOD_ID, "main"),
+            () -> "1.0",
+            "1.0"::equals,
+            "1.0"::equals
+    );
 
-    private static SimpleChannel INSTANCE;
     private static int packetId = 0;
 
     private static int id() {
@@ -18,17 +23,18 @@ public class ModPackets {
     }
 
     public static void register() {
-        INSTANCE = NetworkRegistry.ChannelBuilder
-                .named(ResourceLocation.fromNamespaceAndPath(Stellarbound.MOD_ID, "messages"))
-                .networkProtocolVersion(() -> "1.0")
-                .clientAcceptedVersions(s -> true)
-                .serverAcceptedVersions(s -> true)
-                .simpleChannel();
-
+        // Registrar GunActionPacket
         INSTANCE.messageBuilder(GunActionPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(GunActionPacket::new)
                 .encoder(GunActionPacket::encode)
                 .consumerMainThread(GunActionPacket::handle)
+                .add();
+
+        // Registrar ManaSyncPacket
+        INSTANCE.messageBuilder(ManaSyncPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(ManaSyncPacket::new)
+                .encoder(ManaSyncPacket::encode)
+                .consumerMainThread(ManaSyncPacket::handle)
                 .add();
     }
 
