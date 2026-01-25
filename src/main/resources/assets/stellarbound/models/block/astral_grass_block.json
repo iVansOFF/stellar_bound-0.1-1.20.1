@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/cube_bottom_top",
+  "textures": {
+    "particle": "stellarbound:block/astral_grass_block",
+    "bottom": "stellarbound:block/astral_soil",
+    "top": "stellarbound:block/astral_grass_block_top",
+    "side": "stellarbound:block/astral_grass_block"
+  }
+}
