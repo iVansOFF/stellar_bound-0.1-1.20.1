@@ -122,6 +122,7 @@ public class Stellarbound {
             EntityRenderers.register(ModEntities.WISP_BELL.get(), WispBellRenderer::new);
             EntityRenderers.register(ModEntities.SKRAEVE.get(), SkraeveRenderer::new);
             EntityRenderers.register(ModEntities.BULLET.get(), BulletRenderer::new);
+            EntityRenderers.register(ModEntities.FIREBALL.get(), FireballRenderer::new);
 
             MenuScreens.register(ModMenuTypes.INFUSE_FORGERY_MENU.get(), InfuseForgeryScreen::new);
 

@@ -16,6 +16,13 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, Stellarbound.MOD_ID);
 
+    // ========== ARCANIST ==========
+
+    public static final RegistryObject<Item> FIREWAND = ITEMS.register(
+            "firewand",
+            FirewandItem::new
+    );
+
     // ========== MUNICIÓN ==========
 
     public static final RegistryObject<Item> PAPER_CARTRIDGE = ITEMS.register(
@@ -166,6 +173,30 @@ public class ModItems {
     public static final RegistryObject<BlockItem> SUNSTONE =
             ITEMS.register("sunstone",
                     () -> new BlockItem(ModBlocks.SUNSTONE.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> SOULSTONE =
+            ITEMS.register("soulstone",
+                    () -> new BlockItem(ModBlocks.SOULSTONE.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> SOUL_COBBLESTONE =
+            ITEMS.register("soul_cobblestone",
+                    () -> new BlockItem(ModBlocks.SOUL_COBBLESTONE.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> ASTRAL_SOIL =
+            ITEMS.register("astral_soil",
+                    () -> new BlockItem(ModBlocks.ASTRAL_SOIL.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> ASTRAL_GRASS_BLOCK =
+            ITEMS.register("astral_grass_block",
+                    () -> new BlockItem(ModBlocks.ASTRAL_GRASS_BLOCK.get(),
                             new Item.Properties())
             );
 

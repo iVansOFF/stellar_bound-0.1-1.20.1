@@ -1,10 +1,7 @@
 package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
-import net.cardboard.stellarbound.entity.BulletEntity;
-import net.cardboard.stellarbound.entity.SkraeveEntity;
-import net.cardboard.stellarbound.entity.WimpEntity;
-import net.cardboard.stellarbound.entity.WispBellEntity;
+import net.cardboard.stellarbound.entity.*;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraftforge.registries.DeferredRegister;
@@ -43,4 +40,12 @@ public class ModEntities {
                             .clientTrackingRange(4)
                             .updateInterval(20)
                             .build("bullet"));
+
+    public static final RegistryObject<EntityType<FireballEntity>> FIREBALL =
+            ENTITIES.register("fireball",
+                    () -> EntityType.Builder.<FireballEntity>of(FireballEntity::new, MobCategory.MISC)
+                            .sized(1f, 1f) // Tamaño ligeramente mayor para la bola de fuego
+                            .clientTrackingRange(8) // Mayor rango de seguimiento
+                            .updateInterval(2) // Actualización más frecuente para animaciones suaves
+                            .build("fireball"));
 }

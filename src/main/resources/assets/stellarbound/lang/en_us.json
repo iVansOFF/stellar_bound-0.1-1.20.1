@@ -2,6 +2,7 @@
   "item.stellarbound.wisp_bell_spawn_egg": "Wisp Bell Spawn Egg",
   "item.stellarbound.wimp_spawn_egg": "Wimp Spawn Egg",
   "item.stellarbound.skraeve_spawn_egg": "Skraeve Spawn Egg",
+  "item.stellarbound.firewand": "Firewand",
   "item.stellarbound.flintlock": "Flintlock",
   "item.stellarbound.paper_cartridge": "Paper Cartridge",
   "item.stellarbound.iron_greatsword": "Iron Greatsword",
@@ -19,13 +20,32 @@
   "item.stellarbound.bright_stick": "Bright Stick",
   "item.stellarbound.moon_shard": "Moon Shard",
   "item.stellarbound.wimp_essence": "Wimp Essence",
+
+
+
   "block.stellarbound.magic_wood_plank": "Magic Wood Plank",
   "block.stellarbound.moonstone": "Moon Stone",
   "block.stellarbound.sunstone": "Sun Stone",
+  "block.stellarbound.soulstone": "Soulstone",
+  "block.stellarbound.soul_cobblestone": "Soul Cobblestone",
+  "block.stellarbound.astral_soil": "Astral Soil",
+  "block.stellarbound.astral_grass_block": "Astral Grass Block",
   "block.stellarbound.infuse_forgery": "Infuse Forgery",
+
+
+
+  "entity.stellarbound.skraeve": "Skraeve",
+  "entity.stellarbound.wimp": "Wimp",
+  "entity.stellarbound.wisp_bell": "Wisp Bell",
+
+
+
   "itemGroup.stellarbound.stellarbound_materials": "Stellarbound Materials",
   "itemGroup.stellarbound.stellarbound_mobs": "Stellarbound Mobs",
   "itemGroup.stellarbound.stellarbound_blocks": "Stellarbound Blocks",
+
+
+
   "key.categories.stellarbound": "Stellarbound Keys",
   "key.stellarbound.reload": "Reload Gun",
   "key.stellarbound.shoot": "Shoot Gun"

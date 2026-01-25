@@ -31,11 +31,13 @@ public class ManaEvents {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END && !event.player.level().isClientSide()) {
             event.player.getCapability(ManaProvider.MANA).ifPresent(mana -> {
-                // Regenerar mana (0.1 por tick = 2 por segundo)
-                mana.tickRegen();
+                // Regenerar mana cada 20 ticks (1 segundo)
+                if (event.player.tickCount % 20 == 0) {
+                    mana.tickRegen();
+                }
 
-                // Sincronizar con cliente cada 10 ticks
-                if (event.player.tickCount % 10 == 0) {
+                // Sincronizar con cliente cada 20 ticks
+                if (event.player.tickCount % 20 == 0) {
                     syncMana(event.player, mana);
                 }
             });

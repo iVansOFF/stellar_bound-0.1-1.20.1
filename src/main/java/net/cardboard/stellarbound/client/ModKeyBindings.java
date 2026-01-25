@@ -3,7 +3,6 @@ package net.cardboard.stellarbound.client;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraftforge.client.settings.KeyConflictContext;
-import org.lwjgl.glfw.GLFW;
 
 public class ModKeyBindings {
 
@@ -13,7 +12,7 @@ public class ModKeyBindings {
             "key.stellarbound.reload",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM,
-            GLFW.GLFW_KEY_R,
+            InputConstants.KEY_R,  // Usa InputConstants en lugar de GLFW
             KEY_CATEGORY_STELLARBOUND
     );
 
@@ -21,7 +20,7 @@ public class ModKeyBindings {
             "key.stellarbound.shoot",
             KeyConflictContext.IN_GAME,
             InputConstants.Type.MOUSE,
-            GLFW.GLFW_MOUSE_BUTTON_LEFT,
+            InputConstants.MOUSE_BUTTON_LEFT,  // Usa InputConstants en lugar de GLFW
             KEY_CATEGORY_STELLARBOUND
     );
 }
