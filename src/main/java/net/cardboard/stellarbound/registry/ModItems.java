@@ -3,6 +3,7 @@ package net.cardboard.stellarbound.registry;
 import net.cardboard.stellarbound.item.*;
 import net.cardboard.stellarbound.item.weapon.gun.FlintlockItem;
 import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.Tiers;
 import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.cardboard.stellarbound.Stellarbound;
@@ -200,10 +201,38 @@ public class ModItems {
                             new Item.Properties())
             );
 
+    public static final RegistryObject<BlockItem> SOULWOOD_LOG =
+            ITEMS.register("soulwood_log",
+                    () -> new BlockItem(ModBlocks.SOULWOOD_LOG.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> STRIPPED_SOULWOOD_LOG =
+            ITEMS.register("stripped_soulwood_log",
+                    () -> new BlockItem(ModBlocks.STRIPPED_SOULWOOD_LOG.get(),
+                            new Item.Properties())
+            );
+
+    public static final RegistryObject<BlockItem> LUMINOUS_SOULWOOD_LEAVES =
+            ITEMS.register("luminous_soulwood_leaves",
+                    () -> new BlockItem(ModBlocks.LUMINOUS_SOULWOOD_LEAVES.get(),
+                            new Item.Properties())
+            );
+
     public static final RegistryObject<Item> INFUSE_FORGERY =
             ITEMS.register("infuse_forgery",
                     () -> new InfuseForgeryItem(
                             ModBlocks.INFUSE_FORGERY.get(),
                             new Item.Properties()
                     ));
+
+    public static final RegistryObject<Item> SOULSONG_FLOWER = ITEMS.register("soulsong_flower",
+            () -> new BlockItem(ModBlocks.SOULSONG_FLOWER.get(),
+                    new Item.Properties()
+                            .rarity(Rarity.UNCOMMON)));
+
+    public static final RegistryObject<Item> SOULWOOD_SAPLING = ITEMS.register("soulwood_sapling",
+            () -> new BlockItem(ModBlocks.SOULWOOD_SAPLING.get(),
+                    new Item.Properties()
+                            .rarity(Rarity.UNCOMMON)));
 }

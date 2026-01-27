@@ -2,11 +2,13 @@ package net.cardboard.stellarbound.registry;
 
 import net.cardboard.stellarbound.Stellarbound;
 import net.cardboard.stellarbound.block.*;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -51,7 +53,7 @@ public class ModBlocks {
             () -> new InfuseForgeryBlock(BlockBehaviour.Properties.of()
                     .mapColor(MapColor.METAL)
                     .requiresCorrectToolForDrops()
-                    .strength(3.5F)
+                    .strength(1F)
                     .sound(SoundType.METAL)
                     .noOcclusion()));
 
@@ -91,8 +93,73 @@ public class ModBlocks {
                             .mapColor(MapColor.GRASS)
                             .sound(SoundType.GRASS)
                             .strength(1F, 1.0F)
-                            .lightLevel(state -> 8)
+                            .lightLevel(state -> 15)
                             .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
+
+    public static final RegistryObject<Block> SOULWOOD_LOG =
+            BLOCKS.register("soulwood_log",
+                    () -> new SoulwoodLogBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)
+                            .mapColor(MapColor.WOOD)
+                            .sound(SoundType.NETHER_WOOD)
+                            .strength(2F, 1.0F)
+                            .noOcclusion()
+                            .isValidSpawn((a,b,c,d) -> true)
+                    ));
+
+    public static final RegistryObject<Block> STRIPPED_SOULWOOD_LOG =
+            BLOCKS.register("stripped_soulwood_log",
+                    () -> new StrippedSoulwoodLogBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG)
+                            .mapColor(MapColor.WOOD)
+                            .sound(SoundType.NETHER_WOOD)
+                            .strength(2F, 1.0F)
+                            .noOcclusion()
+                            .isValidSpawn((a,b,c,d) -> true)
+                    ));
+
+    public static final RegistryObject<Block> LUMINOUS_SOULWOOD_LEAVES =
+            BLOCKS.register("luminous_soulwood_leaves",
+                    () -> new LuminousSoulwoodLeavesBlock(Block.Properties.copy(Blocks.ACACIA_LEAVES)
+                            .mapColor(MapColor.GRASS)
+                            .sound(SoundType.CHERRY_LEAVES)
+                            .strength(0.5F, 1.0F)
+                            .lightLevel(state -> 15)
+                            .noOcclusion()
+                            .isValidSpawn((a,b,c,d) -> true)
+                            .isSuffocating((state, getter, pos) -> false)
+                            .isViewBlocking((state, getter, pos) -> false)
+                            .randomTicks()
+                            .instabreak() // Similar a otras hojas
+                            .requiresCorrectToolForDrops() // Se mina mejor con herramientas
+                            .isRedstoneConductor((state, getter, pos) -> false) // No bloquea redstone
+                    ));
+
+    public static final RegistryObject<Block> SOULSONG_FLOWER = BLOCKS.register("soulsong_flower",
+            () -> new SoulsongFlowerBlock(
+                    MobEffects.REGENERATION, // Efecto al comer
+                    200, // Duración en ticks (200 ticks = 10 segundos)
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.GRASS)
+                            .instabreak()
+                            .noCollission()
+                            .lightLevel(state -> 12) // Brillo
+                            .randomTicks() // Para que funcione randomTick()
+                            .offsetType(BlockBehaviour.OffsetType.XZ)
+                            .pushReaction(PushReaction.DESTROY)
+            ));
+
+    public static final RegistryObject<Block> SOULWOOD_SAPLING = BLOCKS.register("soulwood_sapling",
+            () -> new SoulSapling(
+                    BlockBehaviour.Properties.of()
+                            .mapColor(MapColor.COLOR_PURPLE)
+                            .sound(SoundType.GRASS)
+                            .instabreak()
+                            .noCollission()
+                            .lightLevel(state -> 12) // Brillo
+                            .randomTicks() // Para que funcione randomTick()
+                            .offsetType(BlockBehaviour.OffsetType.XZ)
+                            .pushReaction(PushReaction.DESTROY)
+            ));
 }

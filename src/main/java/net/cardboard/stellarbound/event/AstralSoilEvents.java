@@ -57,7 +57,7 @@ public class AstralSoilEvents {
                 // Partículas (opcional)
                 if (level instanceof ServerLevel serverLevel) {
                     serverLevel.sendParticles(
-                            net.minecraft.core.particles.ParticleTypes.HAPPY_VILLAGER,
+                            net.minecraft.core.particles.ParticleTypes.GLOW,
                             soilPos.getX() + 0.5,
                             soilPos.getY() + 1.0,
                             soilPos.getZ() + 0.5,

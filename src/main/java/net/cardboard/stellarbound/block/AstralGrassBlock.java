@@ -4,7 +4,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
@@ -28,7 +27,7 @@ public class AstralGrassBlock extends SpreadingSnowyDirtBlock {
         builder.add(SNOWY);
     }
 
-    // MÉTODO CLAVE: Esto hace que se convierta en tierra cuando se coloca un bloque sólido encima
+    // Esto hace que se convierta en tierra cuando se coloca un bloque sólido encima
     @Override
     public BlockState updateShape(BlockState state, Direction direction, BlockState neighborState,
                                   LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
@@ -48,33 +47,9 @@ public class AstralGrassBlock extends SpreadingSnowyDirtBlock {
 
     @Override
     public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // Verificar si tiene suficiente luz
+        // Solo verificar si debe convertirse en tierra
         if (!canBeGrass(state, level, pos)) {
             level.setBlockAndUpdate(pos, ModBlocks.ASTRAL_SOIL.get().defaultBlockState());
-        } else {
-            // Propagación a Astral Soil cercano
-            if (level.getMaxLocalRawBrightness(pos.above()) >= 9) {
-                trySpread(state, level, pos, random);
-            }
-        }
-    }
-
-    private void trySpread(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        for(int i = 0; i < 4; ++i) {
-            BlockPos targetPos = pos.offset(
-                    random.nextInt(3) - 1,
-                    random.nextInt(5) - 3,
-                    random.nextInt(3) - 1
-            );
-
-            if (level.getBlockState(targetPos).is(ModBlocks.ASTRAL_SOIL.get()) &&
-                    canPropagate(state, level, targetPos)) {
-
-                BlockState newState = this.defaultBlockState()
-                        .setValue(SNOWY, level.getBlockState(targetPos.above()).is(Blocks.SNOW));
-
-                level.setBlockAndUpdate(targetPos, newState);
-            }
         }
     }
 
@@ -87,13 +62,9 @@ public class AstralGrassBlock extends SpreadingSnowyDirtBlock {
             return true;
         }
 
-        // Necesita al menos nivel 4 de luz (similar al grass vanilla)
+        // Necesita al menos nivel 4 de luz
         int light = level.getBrightness(net.minecraft.world.level.LightLayer.BLOCK, abovePos);
         return light >= 4 && !aboveState.isSolidRender(level, abovePos);
-    }
-
-    private static boolean canPropagate(BlockState state, LevelReader level, BlockPos pos) {
-        return canBeGrass(state, level, pos);
     }
 
     // Para compatibilidad con pala

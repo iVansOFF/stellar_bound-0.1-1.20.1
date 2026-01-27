@@ -15,15 +15,6 @@ public class AstralSoilBlock extends Block {
         // NO registrar eventos aquí
     }
 
-    // También permitir que se convierta en grass con el tiempo (opcional)
-    @Override
-    public void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        // Posibilidad de convertirse en grass naturalmente si hay grass block cerca
-        if (random.nextInt(10) == 0) { // 10% de chance por tick
-            tryConvertFromNearbyGrass(level, pos, random);
-        }
-    }
-
     private void tryConvertFromNearbyGrass(ServerLevel level, BlockPos pos, RandomSource random) {
         // Verificar condiciones de luz
         BlockPos abovePos = pos.above();

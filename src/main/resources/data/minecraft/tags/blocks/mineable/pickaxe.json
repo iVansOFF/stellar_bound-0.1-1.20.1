@@ -2,6 +2,9 @@
   "replace": false,
   "values": [
     "stellarbound:moonstone",
-    "stellarbound:sunstone"
+    "stellarbound:sunstone",
+    "stellarbound:soulstone",
+    "stellarbound:soul_cobblestone",
+    "stellarbound:infuse_forgery"
   ]
 }

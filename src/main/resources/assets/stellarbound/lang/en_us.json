@@ -25,11 +25,16 @@
 
   "block.stellarbound.magic_wood_plank": "Magic Wood Plank",
   "block.stellarbound.moonstone": "Moon Stone",
+  "block.stellarbound.soulsong_flower": "Soulsong Flower",
+  "block.stellarbound.soulwood_sapling": "Lumina Sapling",
   "block.stellarbound.sunstone": "Sun Stone",
   "block.stellarbound.soulstone": "Soulstone",
-  "block.stellarbound.soul_cobblestone": "Soul Cobblestone",
+  "block.stellarbound.soul_cobblestone": "Lumina Cobblestone",
   "block.stellarbound.astral_soil": "Astral Soil",
   "block.stellarbound.astral_grass_block": "Astral Grass Block",
+  "block.stellarbound.soulwood_log": "Lumina Wood Log",
+  "block.stellarbound.stripped_soulwood_log": "Stripped Lumina Wood Log",
+  "block.stellarbound.luminous_soulwood_leaves": "Luminous Lumina Wood Leaves",
   "block.stellarbound.infuse_forgery": "Infuse Forgery",
 
 

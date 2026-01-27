@@ -7,6 +7,8 @@ import net.cardboard.stellarbound.client.hud.ManaOverlay;
 import net.cardboard.stellarbound.client.renderer.*;
 import net.cardboard.stellarbound.entity.BulletEntity;
 import net.cardboard.stellarbound.network.ModPackets;
+import net.cardboard.stellarbound.worldgen.tree.ModFoliagePlacerTypes;
+import net.cardboard.stellarbound.worldgen.tree.ModTrunkPlacerTypes;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.cardboard.stellarbound.worldgen.*;
 import net.minecraft.core.RegistrySetBuilder;
@@ -66,6 +68,9 @@ public class Stellarbound {
         modEventBus.addListener(this::onGatherData);
 
         MinecraftForge.EVENT_BUS.register(this);
+
+        ModTrunkPlacerTypes.register(modEventBus);
+        ModFoliagePlacerTypes.register(modEventBus);
     }
 
     public static ResourceLocation id(String path) {

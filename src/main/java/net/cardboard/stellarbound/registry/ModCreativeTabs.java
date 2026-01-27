@@ -91,10 +91,25 @@ public class ModCreativeTabs {
                                 output.accept(ModItems.MAGIC_WOOD_PLANK.get());
                                 output.accept(ModItems.MOONSTONE.get());
                                 output.accept(ModItems.SUNSTONE.get());
+                            })
+                            .build()
+            );
+
+    public static final RegistryObject<CreativeModeTab> STELLARBOUND_STARFIELD =
+            TABS.register("stellarbound_starfield", () ->
+                    CreativeModeTab.builder()
+                            .title(net.minecraft.network.chat.Component.literal("Stellarbound Starfields"))
+                            .icon(() -> new ItemStack(ModItems.ASTRAL_GRASS_BLOCK.get()))
+                            .displayItems((parameters, output) -> {
                                 output.accept(ModItems.SOULSTONE.get());
                                 output.accept(ModItems.SOUL_COBBLESTONE.get());
                                 output.accept(ModItems.ASTRAL_SOIL.get());
                                 output.accept(ModItems.ASTRAL_GRASS_BLOCK.get());
+                                output.accept(ModItems.SOULWOOD_LOG.get());
+                                output.accept(ModItems.STRIPPED_SOULWOOD_LOG.get());
+                                output.accept(ModItems.LUMINOUS_SOULWOOD_LEAVES.get());
+                                output.accept(ModItems.SOULSONG_FLOWER.get());
+                                output.accept(ModItems.SOULWOOD_SAPLING.get());
                             })
                             .build()
             );

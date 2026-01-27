@@ -1,0 +1,52 @@
+{
+  "parent": "minecraft:block/leaves",
+  "render_type": "cutout_mipped",
+  "textures": {
+    "all": "stellarbound:block/luminous_soulwood_leaves",
+    "particle": "stellarbound:block/luminous_soulwood_leaves"
+  },
+  "elements": [
+    {
+      "from": [0, 0, 0],
+      "to": [16, 16, 16],
+      "faces": {
+        "down":  {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "down",
+          "emissive": true
+        },
+        "up":    {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "up",
+          "emissive": true
+        },
+        "north": {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "north",
+          "emissive": true
+        },
+        "south": {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "south",
+          "emissive": true
+        },
+        "west":  {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "west",
+          "emissive": true
+        },
+        "east":  {
+          "uv": [0, 0, 16, 16],
+          "texture": "#all",
+          "cullface": "east",
+          "emissive": true
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "": [
+      { "model": "stellarbound:block/luminous_soulwood_leaves" },
+      { "model": "stellarbound:block/luminous_soulwood_leaves", "y": 90 },
+      { "model": "stellarbound:block/luminous_soulwood_leaves", "y": 180 },
+      { "model": "stellarbound:block/luminous_soulwood_leaves", "y": 270 }
+    ]
+  }
+}
