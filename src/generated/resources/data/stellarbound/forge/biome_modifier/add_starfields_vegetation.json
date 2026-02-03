@@ -1,0 +1,9 @@
+{
+  "type": "forge:add_features",
+  "biomes": "stellarbound:starfields",
+  "features": [
+    "stellarbound:soulwood_placed",
+    "stellarbound:soulsong_flower_placed"
+  ],
+  "step": "vegetal_decoration"
+}

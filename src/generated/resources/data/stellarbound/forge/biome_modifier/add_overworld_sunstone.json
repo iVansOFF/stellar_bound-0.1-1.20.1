@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
   "biomes": "#minecraft:is_overworld",
-  "features": "stellarbound:sunstone_ore_placed",
+  "features": "stellarbound:overworld_sunstone_placed",
   "step": "underground_ores"
 }

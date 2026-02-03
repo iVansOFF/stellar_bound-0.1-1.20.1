@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "stellarbound:starfields",
+  "features": "stellarbound:starfields_moonstone_placed",
+  "step": "underground_ores"
+}

@@ -25,7 +25,6 @@ public class ModBlocks {
                             .sound(SoundType.WOOD)
                             .strength(2.0F, 6.0F)
                             .lightLevel(state -> 2) // 👈 luz real
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
     public static final RegistryObject<Block> MOONSTONE =
@@ -35,7 +34,6 @@ public class ModBlocks {
                             .sound(SoundType.AMETHYST)
                             .strength(2.5F, 6.0F)
                             .lightLevel(state -> 5)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
     public static final RegistryObject<Block> SUNSTONE =
@@ -45,7 +43,6 @@ public class ModBlocks {
                             .sound(SoundType.AMETHYST)
                             .strength(2.5F, 6.0F)
                             .lightLevel(state -> 8) // 👈 luz real
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -54,8 +51,9 @@ public class ModBlocks {
                     .mapColor(MapColor.METAL)
                     .requiresCorrectToolForDrops()
                     .strength(1F)
-                    .sound(SoundType.METAL)
-                    .noOcclusion()));
+                    .sound(SoundType.STONE)
+                    .noOcclusion()
+            ));
 
     public static final RegistryObject<Block> SOULSTONE =
             BLOCKS.register("soulstone",
@@ -63,7 +61,6 @@ public class ModBlocks {
                             .mapColor(MapColor.STONE)
                             .sound(SoundType.STONE)
                             .strength(3F, 6.0F)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -73,7 +70,6 @@ public class ModBlocks {
                             .mapColor(MapColor.STONE)
                             .sound(SoundType.STONE)
                             .strength(3F, 6.0F)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -83,7 +79,6 @@ public class ModBlocks {
                             .mapColor(MapColor.DIRT)
                             .sound(SoundType.GRAVEL)
                             .strength(1F, 1.0F)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -94,7 +89,6 @@ public class ModBlocks {
                             .sound(SoundType.GRASS)
                             .strength(1F, 1.0F)
                             .lightLevel(state -> 15)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -104,7 +98,6 @@ public class ModBlocks {
                             .mapColor(MapColor.WOOD)
                             .sound(SoundType.NETHER_WOOD)
                             .strength(2F, 1.0F)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 
@@ -114,7 +107,6 @@ public class ModBlocks {
                             .mapColor(MapColor.WOOD)
                             .sound(SoundType.NETHER_WOOD)
                             .strength(2F, 1.0F)
-                            .noOcclusion()
                             .isValidSpawn((a,b,c,d) -> true)
                     ));
 

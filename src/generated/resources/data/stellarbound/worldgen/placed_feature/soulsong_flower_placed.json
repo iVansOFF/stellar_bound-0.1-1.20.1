@@ -1,9 +1,9 @@
 {
-  "feature": "stellarbound:soulwood",
+  "feature": "stellarbound:soulsong_flower",
   "placement": [
     {
       "type": "minecraft:rarity_filter",
-      "chance": 10
+      "chance": 32
     },
     {
       "type": "minecraft:in_square"

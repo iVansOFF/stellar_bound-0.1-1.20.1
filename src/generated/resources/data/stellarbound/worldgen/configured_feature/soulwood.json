@@ -5,7 +5,7 @@
     "dirt_provider": {
       "type": "minecraft:simple_state_provider",
       "state": {
-        "Name": "minecraft:dirt"
+        "Name": "stellarbound:astral_soil"
       }
     },
     "foliage_placer": {
@@ -20,7 +20,7 @@
       }
     },
     "force_dirt": false,
-    "ignore_vines": false,
+    "ignore_vines": true,
     "minimum_size": {
       "type": "minecraft:two_layers_feature_size",
       "limit": 1,
@@ -29,7 +29,7 @@
     },
     "trunk_placer": {
       "type": "stellarbound:soulwood_trunk_placer",
-      "base_height": 5,
+      "base_height": 7,
       "height_rand_a": 2,
       "height_rand_b": 0
     },
