@@ -1,31 +1,31 @@
-[03feb.2026 15:01:48.514] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\delao\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, stellarbound, --all, --output, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\generated\resources, --existing, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\main\resources]
-[03feb.2026 15:01:48.523] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.17 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
-[03feb.2026 15:01:48.720] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
-[03feb.2026 15:01:48.798] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/delao/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
-[03feb.2026 15:01:49.177] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.4.10\ccc533c7dd67e0983217197d7549c8b49e7ab453\javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[03feb.2026 15:01:49.181] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.4.10\e9a2879fe3612ea34b9728ec2633304a1e67d480\lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[03feb.2026 15:01:49.185] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.4.10\ec5cefbbc65c67302b8fac317010faab85fa14b9\mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
-[03feb.2026 15:01:49.189] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.4.10\94dae566be650566ea9115a1414ab76bfcf5a804\fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
-[03feb.2026 15:01:49.415] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
-[03feb.2026 15:01:51.103] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
-[03feb.2026 15:01:51.118] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\delao\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, stellarbound, --all, --output, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\generated\resources, --existing, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\main\resources]
-[03feb.2026 15:01:51.490] [main/INFO] [mixin/]: Remapping refMap terrablender.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
-[03feb.2026 15:01:51.491] [main/INFO] [mixin/]: Remapping refMap terrablender.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
-[03feb.2026 15:01:51.494] [main/INFO] [mixin/]: Remapping refMap curios.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
-[03feb.2026 15:01:51.496] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
-[03feb.2026 15:01:52.089] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [stellarbound]
-[03feb.2026 15:01:58.335] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
-[03feb.2026 15:01:58.337] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
-[03feb.2026 15:01:58.441] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
-[03feb.2026 15:01:59.006] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/delao/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1.jar%23191!/assets/.mcassetsroot' uses unexpected schema
-[03feb.2026 15:01:59.006] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/delao/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1.jar%23191!/data/.mcassetsroot' uses unexpected schema
-[03feb.2026 15:01:59.183] [main/INFO] [stellarbound/]: === GENERANDO DATAPACKS ===
-[03feb.2026 15:01:59.193] [main/INFO] [stellarbound/]: === DATAPACKS GENERADOS CORRECTAMENTE ===
-[03feb.2026 15:01:59.208] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
-[03feb.2026 15:01:59.352] [Worker-Main-1/INFO] [stellarbound/]: Registrando ConfiguredFeatures...
-[03feb.2026 15:01:59.352] [Worker-Main-1/INFO] [stellarbound/]: Registrando PlacedFeatures...
-[03feb.2026 15:01:59.352] [Worker-Main-1/INFO] [stellarbound/]: Registrando Biomes...
-[03feb.2026 15:01:59.357] [Worker-Main-1/INFO] [stellarbound/]: Registrando BiomeModifiers...
-[03feb.2026 15:01:59.392] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 182 ms
-[03feb.2026 15:01:59.392] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 184 ms
-[03feb.2026 15:01:59.396] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 24, old count: 24, new count: 19, removed stale: 6, written: 1
+[06feb.2026 12:26:31.523] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgedatauserdev, --assetIndex, 5, --assetsDir, C:\Users\delao\.gradle\caches\forge_gradle\assets, --gameDir, ., --fml.forgeVersion, 47.4.10, --fml.mcVersion, 1.20.1, --fml.forgeGroup, net.minecraftforge, --fml.mcpVersion, 20230612.114412, --mod, stellarbound, --all, --output, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\generated\resources, --existing, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\main\resources]
+[06feb.2026 12:26:31.536] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 10.0.9+10.0.9+main.dcd20f30 starting: java version 17.0.17 by Eclipse Adoptium; OS Windows 11 arch amd64 version 10.0
+[06feb.2026 12:26:31.774] [main/INFO] [net.minecraftforge.fml.loading.ImmediateWindowHandler/]: ImmediateWindowProvider not loading because launch target is forgedatauserdev
+[06feb.2026 12:26:31.895] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.5 Source=union:/C:/Users/delao/.gradle/caches/modules-2/files-2.1/org.spongepowered/mixin/0.8.5/9d1c0c3a304ae6697ecd477218fa61b850bf57fc/mixin-0.8.5.jar%23128!/ Service=ModLauncher Env=CLIENT
+[06feb.2026 12:26:32.311] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\javafmllanguage\1.20.1-47.4.10\ccc533c7dd67e0983217197d7549c8b49e7ab453\javafmllanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[06feb.2026 12:26:32.317] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\lowcodelanguage\1.20.1-47.4.10\e9a2879fe3612ea34b9728ec2633304a1e67d480\lowcodelanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[06feb.2026 12:26:32.322] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\mclanguage\1.20.1-47.4.10\ec5cefbbc65c67302b8fac317010faab85fa14b9\mclanguage-1.20.1-47.4.10.jar is missing mods.toml file
+[06feb.2026 12:26:32.327] [main/WARN] [net.minecraftforge.fml.loading.moddiscovery.ModFileParser/LOADING]: Mod file C:\Users\delao\.gradle\caches\modules-2\files-2.1\net.minecraftforge\fmlcore\1.20.1-47.4.10\94dae566be650566ea9115a1414ab76bfcf5a804\fmlcore-1.20.1-47.4.10.jar is missing mods.toml file
+[06feb.2026 12:26:32.602] [main/INFO] [net.minecraftforge.fml.loading.moddiscovery.JarInJarDependencyLocator/]: Found 1 dependencies adding them to mods collection
+[06feb.2026 12:26:34.928] [main/INFO] [mixin/]: Compatibility level set to JAVA_17
+[06feb.2026 12:26:34.950] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgedatauserdev' with arguments [--gameDir, ., --assetsDir, C:\Users\delao\.gradle\caches\forge_gradle\assets, --assetIndex, 5, --mod, stellarbound, --all, --output, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\generated\resources, --existing, H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10\src\main\resources]
+[06feb.2026 12:26:35.374] [main/INFO] [mixin/]: Remapping refMap terrablender.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
+[06feb.2026 12:26:35.376] [main/INFO] [mixin/]: Remapping refMap terrablender.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
+[06feb.2026 12:26:35.378] [main/INFO] [mixin/]: Remapping refMap curios.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
+[06feb.2026 12:26:35.381] [main/INFO] [mixin/]: Remapping refMap geckolib.refmap.json using H:\IntelliJ IDEA\Repositories\forge-1.20.1-47.4.10/build/createSrgToMcp/output.srg
+[06feb.2026 12:26:36.307] [main/INFO] [net.minecraftforge.data.loading.DatagenModLoader/]: Initializing Data Gatherer for mods [stellarbound]
+[06feb.2026 12:26:44.492] [modloading-worker-0/INFO] [net.minecraftforge.common.ForgeMod/FORGEMOD]: Forge mod loading, version 47.4.10, for MC 1.20.1 with MCP 20230612.114412
+[06feb.2026 12:26:44.494] [modloading-worker-0/INFO] [net.minecraftforge.common.MinecraftForge/FORGE]: MinecraftForge v47.4.10 Initialized
+[06feb.2026 12:26:44.622] [modloading-worker-0/WARN] [software.bernie.geckolib.GeckoLib/]: Minecraft.getInstance() was null, could not register reload listeners
+[06feb.2026 12:26:45.324] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/delao/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1.jar%23191!/assets/.mcassetsroot' uses unexpected schema
+[06feb.2026 12:26:45.325] [main/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/C:/Users/delao/.gradle/caches/forge_gradle/minecraft_user_repo/net/minecraftforge/forge/1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1/forge-1.20.1-47.4.10_mapped_parchment_2023.09.03-1.20.1.jar%23191!/data/.mcassetsroot' uses unexpected schema
+[06feb.2026 12:26:45.585] [main/INFO] [stellarbound/]: === GENERANDO DATAPACKS ===
+[06feb.2026 12:26:45.592] [main/INFO] [stellarbound/]: === DATAPACKS GENERADOS CORRECTAMENTE ===
+[06feb.2026 12:26:45.618] [main/INFO] [net.minecraft.data.DataGenerator/]: Starting provider: Registries
+[06feb.2026 12:26:45.853] [Worker-Main-1/INFO] [stellarbound/]: Registrando ConfiguredFeatures...
+[06feb.2026 12:26:45.857] [Worker-Main-1/INFO] [stellarbound/]: Registrando PlacedFeatures...
+[06feb.2026 12:26:45.860] [Worker-Main-1/INFO] [stellarbound/]: Registrando Biomes...
+[06feb.2026 12:26:45.863] [Worker-Main-1/INFO] [stellarbound/]: Registrando BiomeModifiers...
+[06feb.2026 12:26:45.911] [main/INFO] [net.minecraft.data.DataGenerator/]: Registries finished after 291 ms
+[06feb.2026 12:26:45.911] [main/INFO] [net.minecraft.data.DataGenerator/]: All providers took: 293 ms
+[06feb.2026 12:26:45.915] [main/INFO] [net.minecraft.data.HashCache/]: Caching: total files: 18, old count: 18, new count: 19, removed stale: 0, written: 0

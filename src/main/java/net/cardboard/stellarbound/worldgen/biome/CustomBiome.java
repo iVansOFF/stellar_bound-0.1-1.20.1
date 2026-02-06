@@ -71,9 +71,9 @@ public class CustomBiome {
 
         // ===== CONSTRUIR BIOMA =====
         return new Biome.BiomeBuilder()
-                .hasPrecipitation(true)
+                .hasPrecipitation(false)
                 .temperature(0.3F)    // Frío
-                .downfall(0.2F)       // Seco
+                .downfall(0.0F)       // Seco
                 .specialEffects(effects.build())
                 .mobSpawnSettings(spawns.build())
                 .generationSettings(generation.build())

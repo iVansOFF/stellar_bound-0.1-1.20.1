@@ -15,26 +15,23 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 public class ModBiomeModifiers {
 
-    public static final ResourceKey<BiomeModifier> ADD_OVERWORLD_MOONSTONE =
-            createKey("add_overworld_moonstone");
+    // ❌ ELIMINADAS - Ya no se necesitan
+    // public static final ResourceKey<BiomeModifier> REPLACE_STARFIELDS_SURFACE = createKey("replace_starfields_surface");
 
-    public static final ResourceKey<BiomeModifier> ADD_OVERWORLD_SUNSTONE =
-            createKey("add_overworld_sunstone");
-
-    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_MOONSTONE =
-            createKey("add_starfields_moonstone");
-
-    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_SUNSTONE =
-            createKey("add_starfields_sunstone");
-
-    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_VEGETATION =
-            createKey("add_starfields_vegetation");
+    public static final ResourceKey<BiomeModifier> ADD_OVERWORLD_MOONSTONE = createKey("add_overworld_moonstone");
+    public static final ResourceKey<BiomeModifier> ADD_OVERWORLD_SUNSTONE = createKey("add_overworld_sunstone");
+    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_MOONSTONE = createKey("add_starfields_moonstone");
+    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_SUNSTONE = createKey("add_starfields_sunstone");
+    public static final ResourceKey<BiomeModifier> ADD_STARFIELDS_VEGETATION = createKey("add_starfields_vegetation");
 
     public static void bootstrap(BootstapContext<BiomeModifier> context) {
         var biomes = context.lookup(Registries.BIOME);
         var placedFeatures = context.lookup(Registries.PLACED_FEATURE);
 
-        // Ores para Overworld (todos los biomas)
+        // ❌ ELIMINADA - SurfaceRules lo maneja automáticamente
+        // context.register(REPLACE_STARFIELDS_SURFACE, ...);
+
+        // Ores para Overworld
         context.register(ADD_OVERWORLD_MOONSTONE, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(
                 biomes.getOrThrow(BiomeTags.IS_OVERWORLD),
                 HolderSet.direct(placedFeatures.getOrThrow(ModPlacedFeatures.OVERWORLD_MOONSTONE_PLACED_KEY)),

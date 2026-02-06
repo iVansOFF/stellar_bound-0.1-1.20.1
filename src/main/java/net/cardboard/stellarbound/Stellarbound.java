@@ -7,6 +7,7 @@ import net.cardboard.stellarbound.client.hud.ManaOverlay;
 import net.cardboard.stellarbound.client.renderer.*;
 import net.cardboard.stellarbound.network.ModPackets;
 import net.cardboard.stellarbound.worldgen.biome.ModBiomes;
+import net.cardboard.stellarbound.worldgen.biome.ModTerrablender;
 import net.cardboard.stellarbound.worldgen.biome.StarfieldsRegion;
 import net.cardboard.stellarbound.worldgen.tree.ModFoliagePlacerTypes;
 import net.cardboard.stellarbound.worldgen.tree.ModTrunkPlacerTypes;
@@ -129,6 +130,8 @@ public class Stellarbound {
     @SuppressWarnings("deprecation")
     private void commonSetup(final FMLCommonSetupEvent event) {
         event.enqueueWork(() -> {
+            ModTerrablender.registerBiomes();
+
             SpawnPlacements.register(
                     ModEntities.WIMP.get(),
                     SpawnPlacements.Type.ON_GROUND,

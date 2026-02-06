@@ -32,13 +32,13 @@ public class StarfieldsRegion extends Region {
         this.addBiome(
                 mapper,
                 Climate.parameters(
-                        Climate.Parameter.span(-0.3F, 0.1F),    // temperatura (rango más pequeño)
-                        Climate.Parameter.span(-0.3F, 0.1F),    // humedad (rango más pequeño)
-                        Climate.Parameter.span(-0.2F, 0.5F),    // continentalidad (más limitada)
-                        Climate.Parameter.span(0.3F, 0.7F),     // erosión (rango más estrecho)
-                        Climate.Parameter.point(0.0F),          // profundidad (superficie)
-                        Climate.Parameter.span(-0.5F, 0.5F),    // rareza (centrado, menos extremo)
-                        0.0F                                    // offset
+                        Climate.Parameter.span(-0.2F, 0.0F),   // temperatura MUY estrecha
+                        Climate.Parameter.span(-0.2F, 0.0F),   // humedad MUY estrecha
+                        Climate.Parameter.span(0.0F, 0.1F),    // continentalidad limitada
+                        Climate.Parameter.span(0.45F, 0.65F),  // erosión precisa (rompe continuidad)
+                        Climate.Parameter.point(0.0F),         // superficie
+                        Climate.Parameter.span(0.6F, 0.9F),    // weirdness ALTA (clave)
+                        0.0F
                 ),
                 ModBiomes.STARFIELDS_KEY
         );

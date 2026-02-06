@@ -28,8 +28,9 @@ public class ModConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_MOONSTONE_KEY = registerKey("overworld_moonstone");
     public static final ResourceKey<ConfiguredFeature<?, ?>> OVERWORLD_SUNSTONE_KEY = registerKey("overworld_sunstone");
 
-    // Las features REPLACE_GRASS / REPLACE_DIRT / REPLACE_STONE se eliminan.
-    // StarfieldsSurfaceRules.java lo hace durante la generación, sin huecos.
+    // ❌ ELIMINADAS - Ya no se usan
+    // public static final ResourceKey<ConfiguredFeature<?, ?>> REPLACE_SURFACE_KEY = registerKey("replace_surface");
+    // public static final ResourceKey<ConfiguredFeature<?, ?>> REPLACE_STONE_KEY = registerKey("replace_stone");
 
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
         return ResourceKey.create(Registries.CONFIGURED_FEATURE,
@@ -43,8 +44,13 @@ public class ModConfiguredFeatures {
         context.register(STARFIELDS_SUNSTONE_ORE_KEY, createStarfieldsSunstoneOre());
         context.register(OVERWORLD_MOONSTONE_KEY, createOverworldMoonstoneOre());
         context.register(OVERWORLD_SUNSTONE_KEY, createOverworldSunstoneOre());
+
+        // ❌ ELIMINADAS - Ya no se registran
+        // context.register(REPLACE_SURFACE_KEY, ModSurfaceReplacements.createSurfaceReplacement());
+        // context.register(REPLACE_STONE_KEY, ModSurfaceReplacements.createStoneReplacement());
     }
 
+    // ... resto de métodos sin cambios
     private static ConfiguredFeature<?, ?> createSoulwoodFeature() {
         return new ConfiguredFeature<>(Feature.TREE,
                 new TreeConfiguration.TreeConfigurationBuilder(
